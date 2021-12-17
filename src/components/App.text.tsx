@@ -2,7 +2,7 @@ import React from 'react';
 import { expect, assert } from 'chai';
 
 import { shallow, mount, configure } from 'enzyme';
-import '../../../tests/setup/index';
+import '../../tests/setup/index';
 
 import AppComponent from './App';
 

@@ -1,0 +1,9 @@
+.header {
+  height: 64px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  color: var(--invert, white);
+  background-color: var(--surface2, #000000);
+}

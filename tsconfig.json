@@ -14,7 +14,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "paths": {
+      "$lib/*": ["./src/lib/*"],
+      "$features/*": ["./src/features/*"],
+      "$components/*": ["./src/components/*"],
+      "$tests/*": ["./src/tests/*"],
+    }
   },
-  "include": ["./src"]
+  "include": ["./src",],
 }
