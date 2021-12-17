@@ -13,4 +13,18 @@ export interface IAuthService {
 
   login(username: string, password: string): Promise<IAuthToken | false>;
   logout(): Promise<boolean>;
+  profile(): Promise<IUserAccountHandle>;
+}
+
+/**
+ * A user account handle.
+ */
+export interface IUserAccountHandle {
+  id: string;
+  name: string;
+  document: {
+    type: 'CPF' | 'CNPJ';
+    value: string;
+  };
+  phone: string;
 }

@@ -1,4 +1,4 @@
-import type { IAuthToken, IAuthService } from '../../types';
+import type { IAuthToken, IAuthService, IUserAccountHandle } from '../../types';
 
 import { fetch } from '../../../../lib/infra/fetch';
 
@@ -14,6 +14,7 @@ export class QEAuth implements IAuthService {
     this.endpoint = endpoint;
     this.authToken = false;
   }
+
   /**
    * Given a {username,password}, retrieves a IAuthToken
    * @param username
@@ -45,8 +46,26 @@ export class QEAuth implements IAuthService {
       return Promise.resolve(false);
     }
   }
+
   async logout(): Promise<boolean> {
     this.authToken = false;
     return Promise.resolve(true);
+  }
+
+  async profile(): Promise<IUserAccountHandle> {
+    console.info('QEAuth:profile');
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve({
+          id: '1234',
+          name: 'Carla Coala',
+          document: {
+            type: 'CPF',
+            value: '123456789-00'
+          },
+          phone: '19987654321'
+        });
+      }, 1000);
+    });
   }
 }

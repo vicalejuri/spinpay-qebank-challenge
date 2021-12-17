@@ -1,0 +1,24 @@
+.title {
+  /** Remove the default margin-top of <h1> */
+  margin: 0;
+  padding: 0;
+}
+
+.launcher {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+
+  list-style: none;
+
+  background-color: #fafafa;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+}
+
+.launcher > li {
+  flex: 0 1 calc(33%);
+  background-color: orange;
+}

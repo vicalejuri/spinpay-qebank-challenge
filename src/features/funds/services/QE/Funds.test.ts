@@ -8,7 +8,7 @@ chai.should();
 import { IAuthToken } from '$features/auth/types';
 import { fetch } from '$lib/infra/fetch';
 
-import { QEFundService } from './Funds';
+import QEFundService from './Funds';
 import { success, error, forbidden, notFound } from '../../../../lib/infra/httpResponsesMock';
 
 /** Intercept the fetch call and instead returns `response` */
@@ -18,7 +18,7 @@ const stubFetch = (response: any) => {
 
 const endpoint = 'https://localhost';
 
-describe('box/services/QE/Funds - Fund management service module', () => {
+describe('funds/services/QE/Funds - Fund management service module', () => {
   const authToken: IAuthToken = {
     id: String(Math.floor(Math.random() * 100)),
     authToken: '123456789'

@@ -5,24 +5,10 @@ export type DateISOString = string;
  * and to allow balance|deposit|withdraw|statement transactions.
  */
 export interface IFundService {
-  deposit(amount: IFundTransaction): Promise<void>;
-  withdraw(amount: IFundTransaction): Promise<void>;
+  deposit(amount: Omit<IFundTransaction, 'type'>): Promise<void>;
+  withdraw(amount: Omit<IFundTransaction, 'type'>): Promise<void>;
   balance(): Promise<IFundBalanceToken>;
   statement(): Promise<IFundTransactionLog[]>;
-  profile(): Promise<IFundAccountHandle>;
-}
-
-/**
- * The user account handle.
- */
-export interface IFundAccountHandle {
-  id: string;
-  name: string;
-  document: {
-    type: 'CPF' | 'CNPJ';
-    value: string;
-  };
-  phone: string;
 }
 
 export enum IFundTransactionsTypes {

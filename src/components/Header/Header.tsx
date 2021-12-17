@@ -1,12 +1,17 @@
 import { Link } from 'react-router-dom';
 import styles from './Header.module.css';
 
-export default function Header() {
+import { observer } from 'mobx-react-lite';
+import { useFundsStore } from '$features/funds/store';
+
+const Header = () => {
+  const funds = useFundsStore();
   return (
     <header className={styles.header}>
       Header
-      <Link to="/">Go to home</Link>
-      <Link to="/statement">Go to Statement</Link>
+      <span id="balance">R$ {funds?.balance}</span>
     </header>
   );
-}
+};
+
+export default observer(Header);

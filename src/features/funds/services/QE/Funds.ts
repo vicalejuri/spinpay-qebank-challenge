@@ -1,6 +1,5 @@
 import {
   IFundService,
-  IFundAccountHandle,
   IFundBalanceToken,
   IFundTransactionLog,
   IFundTransaction,
@@ -14,7 +13,7 @@ import { fetch as globalFetch } from '../../../../lib/infra/fetch';
  * A module to talk to QEBank funds endpoint using REST protocol.
  * Manage deposit, withdraw, balance, statement methods
  */
-export class QEFundService implements IFundService {
+export default class QEFundService implements IFundService {
   endpoint: string;
   authToken: IAuthToken;
 
@@ -39,6 +38,7 @@ export class QEFundService implements IFundService {
    * Deposit `value.amount` into this fund.
    */
   async deposit(value: Omit<IFundTransaction, 'type'>): Promise<void> {
+    // throw new EvalError('Service failed');
     return this.fetch(`${this.endpoint}/accounts/${this.authToken.id}/deposit`, {
       method: 'POST',
       body: JSON.stringify({
@@ -64,16 +64,5 @@ export class QEFundService implements IFundService {
   }
   async statement(): Promise<IFundTransactionLog[]> {
     return this.fetch(`${this.endpoint}/accounts/${this.authToken.id}/statement`);
-  }
-  async profile(): Promise<IFundAccountHandle> {
-    return Promise.resolve({
-      id: '1234',
-      name: 'Carla Coala',
-      document: {
-        type: 'CPF',
-        value: '123456789-00'
-      },
-      phone: '19987654321'
-    });
   }
 }

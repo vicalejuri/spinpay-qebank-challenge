@@ -7,7 +7,7 @@
 export const fetch = (url: string, options: RequestInit = {}) => {
   return window.fetch(url, options).then((response) => {
     if (response.ok) {
-      return response.json();
+      return (response.bodyUsed && response.json()) || response.text();
     } else {
       return Promise.reject(response.text());
     }
