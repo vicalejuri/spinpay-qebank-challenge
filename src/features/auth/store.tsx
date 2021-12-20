@@ -8,7 +8,7 @@ import { IAuthService, IAuthToken, IUserAccountHandle } from './types';
  *
  * Balance, withdraw, deposit and statement data and methods.
  */
-export class AuthStore {
+export default class AuthStore {
   profile: IUserAccountHandle | null = null;
   authToken: IAuthToken | false = false;
   _service: IAuthService | null = null;
@@ -42,9 +42,6 @@ export class AuthStore {
 
 /** React context helpers */
 export const AuthStoreContext = React.createContext<AuthStore | null>(null);
-const AuthStoreProvider = ({ children }: { children: React.ReactNode }) => {
-  return <AuthStoreContext.Provider value={null}>{children}</AuthStoreContext.Provider>;
-};
 
 function useAuthStore() {
   const context = useContext(AuthStoreContext);
@@ -54,4 +51,4 @@ function useAuthStore() {
   return context;
 }
 
-export { AuthStoreProvider, useAuthStore };
+export { useAuthStore };

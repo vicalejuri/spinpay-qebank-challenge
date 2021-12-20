@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import { makeAutoObservable } from 'mobx';
 
-import { composeProviders } from '$lib/utils/composeProviders';
+import { composeProviders } from '../utils/composeProviders';
 import Store, { StoreContext } from './global';
 
-import { FundsStore, FundsStoreContext } from '$features/funds/store';
-import { AuthStore, AuthStoreContext } from '$features/auth/store';
+import FundsStore, { FundsStoreContext } from '$features/funds/store';
+import AuthStore, { AuthStoreContext } from '$features/auth/store';
 
 import AuthService from '$features/auth/services/Auth';
 import FundsService from '$features/funds/services/QE/Funds';

@@ -13,7 +13,7 @@ const stubFetch = (response: any) => {
   stub(window, 'fetch').returns(response);
 };
 
-describe('infra/fetch - HTTP', () => {
+describe('infra/fetch - HTTPS socket', () => {
   describe('fetch()', () => {
     it('Should resolves when response in 200-300 range', async () => {
       stubFetch(success('ok'));

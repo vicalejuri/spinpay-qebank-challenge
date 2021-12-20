@@ -10,6 +10,7 @@ import { fetch } from '$lib/infra/fetch';
 
 import QEFundService from './Funds';
 import { success, error, forbidden, notFound } from '../../../../lib/infra/httpResponsesMock';
+import { IFundBalanceToken } from '$features/funds/types';
 
 /** Intercept the fetch call and instead returns `response` */
 const stubFetch = (response: any) => {
@@ -45,7 +46,7 @@ describe('funds/services/QE/Funds - Fund management service module', () => {
     let response = await request;
   });
   describe('balance(): IFundBalanceToken', () => {
-    const balanceExample = {
+    const balanceExample: IFundBalanceToken = {
       balance: 176.85, // balance amount checked in timestamp
       timestamp: '2021-09-30T17:45:01Z' // last date which balance was updated
     };
