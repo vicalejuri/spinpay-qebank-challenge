@@ -22,10 +22,11 @@ const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   const funds = new FundsStore(
     new FundsService({
       endpoint: String(import.meta.env.VITE_SERVICE_QEBANK_ENDPOINT),
-      authToken: auth.authToken || {
-        authToken: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-        id: '-1'
-      }
+      authToken: auth.authToken
+      // authToken: auth.authToken || {
+      //   authToken: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+      //   id: '-1'
+      // }
     })
   );
 

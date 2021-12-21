@@ -8,11 +8,10 @@ import { fetch } from '../../../../lib/infra/fetch';
  */
 export class QEAuth implements IAuthService {
   endpoint: string;
-  authToken: IAuthToken | false;
+  authToken: IAuthToken | null = null;
 
   constructor({ endpoint }: { endpoint: string }) {
     this.endpoint = endpoint;
-    this.authToken = false;
   }
 
   /**
@@ -32,14 +31,15 @@ export class QEAuth implements IAuthService {
 
     /**
      * Only allow a special queijo user
+     * const authIsValid = username === 'queijo' && password === 'mortadela';
      */
-    const authIsValid = username === 'queijo' && password === 'mortadela';
+    const authIsValid = response?.accessToken !== '';
 
     if (authIsValid) {
+      const authToken = response?.accessToken;
       this.authToken = {
         id: String(Math.floor(Math.random() * 100)),
-        authToken:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOjEyMzQsImNoYW5uZWwiOiJBVE0ifQ._tSiTy9ZY4x5jlaKirdzGce3MMoHSXfBrGP04dFmyUE'
+        authToken: authToken
       };
       return Promise.resolve(this.authToken);
     } else {
@@ -48,24 +48,31 @@ export class QEAuth implements IAuthService {
   }
 
   async logout(): Promise<boolean> {
-    this.authToken = false;
+    this.authToken = null;
     return Promise.resolve(true);
   }
 
   async profile(): Promise<IUserAccountHandle> {
-    console.info('QEAuth:profile');
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve({
-          id: '1234',
-          name: 'Carla Coala',
-          document: {
-            type: 'CPF',
-            value: '123456789-00'
-          },
-          phone: '19987654321'
-        });
-      }, 1000);
-    });
+    const isAuthenticated = (x: null | IAuthToken): x is IAuthToken => x !== null;
+    if (isAuthenticated(this.authToken)) {
+      return await fetch(`${this.endpoint}/${this.authToken.id}/user`);
+    } else {
+      return Promise.reject(new Error('User not authenticated'));
+    }
   }
 }
+//     return new Promise((resolve, reject) => {
+//       setTimeout(() => {
+//         resolve({
+//           id: '1234',
+//           name: 'Carla Coala',
+//           document: {
+//             type: 'CPF',
+//             value: '123456789-00'
+//           },
+//           phone: '19987654321'
+//         });
+//       }, 1000);
+//     });
+//   }
+// }

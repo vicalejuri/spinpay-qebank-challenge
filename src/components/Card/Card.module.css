@@ -1,0 +1,47 @@
+.card {
+  width: auto;
+  min-height: 100px;
+
+  border-radius: 1rem;
+  overflow: hidden;
+  background-color: rgba(200, 200, 200, 0.5);
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/** A single label, so the label occupy the whole card */
+.cardLabel {
+  color: var(--primary);
+}
+
+/** Media and label, so
+ * media is background, label
+ * is in front via absolute position.
+ */
+.cardMedia + .cardLabel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 50%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background-color: rgba(200, 200, 200, 0.5);
+  text-align: center;
+}
+
+.cardMedia {
+  width: 100%;
+  height: auto;
+  position: relative;
+
+  opacity: 0.8;
+}

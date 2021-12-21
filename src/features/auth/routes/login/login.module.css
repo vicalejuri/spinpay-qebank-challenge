@@ -1,0 +1,10 @@
+.login {
+  align-items: center;
+  justify-content: center;
+}
+
+.pageContainer {
+  min-width: 100%;
+  min-height: 240px;
+  height: 50%;
+}

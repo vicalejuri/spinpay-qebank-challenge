@@ -9,7 +9,7 @@ export interface IAuthToken {
 
 export interface IAuthService {
   endpoint: string;
-  authToken: IAuthToken | false;
+  authToken: IAuthToken | null;
 
   login(username: string, password: string): Promise<IAuthToken | false>;
   logout(): Promise<boolean>;

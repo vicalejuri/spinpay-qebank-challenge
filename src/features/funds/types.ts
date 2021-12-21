@@ -20,7 +20,7 @@ export type IFundStatement = IFundTransaction[];
 export interface IFundTransaction {
   id?: string;
   amount: number;
-  channel: string;
+  channel: 'ATM' | 'online' | string;
   note?: string;
   timestamp?: DateISOString;
 }
@@ -36,22 +36,16 @@ export interface IFundService {
   statement(): Promise<IFundStatement>;
 }
 
-export interface IFundTransaction {
-  amount: number;
-  channel: string;
-  note?: string;
-}
-
 /**
  * A transaction log is a history of transactions made to this fund.
  */
-export interface IFundTransactionLog {
-  id: number | string;
-  amount: number;
-  date: DateISOString;
-  channel: 'ATM' | 'online' | string;
-  note?: string;
-}
+// export interface IFundTransactionLog {
+//   id: number | string;
+//   amount: number;
+//   date: DateISOString;
+//   channel: 'ATM' | 'online' | string;
+//   note?: string;
+// }
 
 /**
  * A balance of the fund at `timestamp` date.

@@ -28,4 +28,7 @@
 .right {
   margin-right: 2em;
   margin-left: auto;
+
+  display: flex;
+  gap: 1em;
 }

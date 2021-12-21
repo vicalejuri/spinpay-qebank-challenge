@@ -1,7 +1,8 @@
-import { IFundService, IFundBalanceToken, IFundTransactionLog, IFundTransaction, IFundStatement } from '../../types';
+import { IFundService, IFundBalanceToken, IFundTransaction, IFundStatement } from '../../types';
 
 import type { IAuthToken } from '$features/auth/types';
 import { fetch as globalFetch } from '../../../../lib/infra/fetch';
+import { AssertionError } from 'chai';
 
 /**
  * A module to talk to QEBank funds endpoint using REST protocol.
@@ -9,21 +10,29 @@ import { fetch as globalFetch } from '../../../../lib/infra/fetch';
  */
 export default class QEFundService implements IFundService {
   endpoint: string;
-  authToken: IAuthToken;
+  authToken: IAuthToken | null = null;
 
-  constructor({ endpoint, authToken }: { endpoint: string; authToken: IAuthToken }) {
+  constructor({ endpoint, authToken }: { endpoint: string; authToken: IAuthToken | null }) {
     this.endpoint = endpoint || 'https://localhost:3000';
     this.authToken = authToken;
   }
 
+  isAuthenticated(x: null | IAuthToken): x is IAuthToken {
+    return x !== null;
+  }
+
   /** Pass along the auth token, stamping the request with authToken */
   fetch(url: string, options?: RequestInit): Promise<any> {
+    /** Make sure we're authenticated before proceeding */
+    if (!this.isAuthenticated(this.authToken)) {
+      throw new AssertionError('Unauthenticated');
+    }
     return globalFetch(url, {
       ...options,
       headers: {
         ...options?.headers,
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.authToken.authToken}`
+        Authorization: `Bearer ${this.authToken?.authToken}`
       }
     });
   }
@@ -33,7 +42,7 @@ export default class QEFundService implements IFundService {
    */
   async deposit(value: Omit<IFundTransaction, 'type'>): Promise<void> {
     try {
-      await this.fetch(`${this.endpoint}/accounts/${this.authToken.id}/deposit`, {
+      await this.fetch(`${this.endpoint}/accounts/${this.authToken?.id}/deposit`, {
         method: 'POST',
         body: JSON.stringify({
           ...value
@@ -59,7 +68,7 @@ export default class QEFundService implements IFundService {
    * Withdraw `amount` from this fund.
    */
   async withdraw(value: Omit<IFundTransaction, 'type'>): Promise<void> {
-    return await this.fetch(`${this.endpoint}/accounts/${this.authToken.id}/withdraw`, {
+    return await this.fetch(`${this.endpoint}/accounts/${this.authToken?.id}/withdraw`, {
       method: 'POST',
       body: JSON.stringify({
         ...value
@@ -67,10 +76,10 @@ export default class QEFundService implements IFundService {
     });
   }
   async balance(): Promise<IFundBalanceToken> {
-    return await this.fetch(`${this.endpoint}/accounts/${this.authToken.id}/balance`);
+    return await this.fetch(`${this.endpoint}/accounts/${this.authToken?.id}/balance`);
   }
   async statement(): Promise<IFundStatement> {
-    const response = await this.fetch(`${this.endpoint}/accounts/${this.authToken.id}/statement`);
+    const response = await this.fetch(`${this.endpoint}/accounts/${this.authToken?.id}/statement`);
     return response.data;
   }
 }

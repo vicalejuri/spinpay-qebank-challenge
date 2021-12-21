@@ -6,7 +6,7 @@ import { shallow, mount, configure } from 'enzyme';
 import '$tests/setup/index';
 
 import FundsStore from './index';
-import { IFundBalanceToken, IFundService, IFundTransaction, IFundTransactionLog } from '../types';
+import { IFundBalanceToken, IFundService, IFundTransaction } from '../types';
 
 const fakeFundsService: IFundService = {
   deposit: (transaction: IFundTransaction) => Promise.resolve(),
@@ -22,9 +22,9 @@ const fakeFundsService: IFundService = {
         amount: 0,
         channel: 'atm',
         date: '2020-01-01T00:00:00.000Z',
-        id: 1,
+        id: '1',
         note: ''
-      } as IFundTransactionLog
+      } as IFundTransaction
     ])
 };
 
@@ -51,7 +51,7 @@ describe('funds/store - FundsStore Domain module', () => {
     it('Should throws when server/network failed', async () => {
       const store = new FundsStore({
         ...fakeFundsService,
-        deposit: (amount: number) => Promise.reject(new Error('Network error'))
+        deposit: (transaction) => Promise.reject(new Error('Network error'))
       });
       const depositFn = async () => {
         await store.deposit(100);

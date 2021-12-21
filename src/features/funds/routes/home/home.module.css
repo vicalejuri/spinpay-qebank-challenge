@@ -17,38 +17,3 @@
 .launcher > li {
   flex: 0 1 calc(33%);
 }
-
-.card {
-  width: auto;
-  border-radius: 1rem;
-  overflow: hidden;
-  background-color: orange;
-
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
-.cardLabel {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 50%;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  background-color: #d2d2d2;
-  text-align: center;
-  color: var(--primary);
-}
-
-.cardMedia {
-  width: 100%;
-  height: auto;
-  background-color: #fafafa;
-  /* box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1); */
-}
