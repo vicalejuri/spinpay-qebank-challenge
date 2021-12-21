@@ -14,6 +14,10 @@ export class QEAuth implements IAuthService {
     this.endpoint = endpoint;
   }
 
+  setAuthToken(authToken: IAuthToken | null) {
+    this.authToken = authToken;
+  }
+
   /**
    * Given a {username,password}, retrieves a IAuthToken
    * @param username
@@ -40,7 +44,7 @@ export class QEAuth implements IAuthService {
       this.authToken = {
         id: String(Math.floor(Math.random() * 100)),
         createdAt: new Date().toISOString(),
-        authToken: authToken
+        authToken
       };
       return Promise.resolve(this.authToken);
     } else {

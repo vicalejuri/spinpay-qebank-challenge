@@ -14,6 +14,8 @@ export interface IAuthService {
   endpoint: string;
   authToken: IAuthToken | null;
 
+  setAuthToken(token: IAuthToken | null): void;
+
   login(username: string, password: string): Promise<IAuthToken | false>;
   logout(): Promise<boolean>;
   profile(): Promise<IUserAccountHandle>;

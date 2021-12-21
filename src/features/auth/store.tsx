@@ -18,13 +18,17 @@ export default class AuthStore {
       _service: false
     });
     this._service = service;
-    this.restoreAuthToken();
+    this.restoreAuthTokenSession();
   }
 
-  private restoreAuthToken() {
+  /**
+   * Remember-me functionality, storing the auth object in the SESSION storage.
+   */
+  private restoreAuthTokenSession() {
     this.authToken = (JSON.stringify(sessionStorage.getItem('authToken')) as unknown as IAuthToken) || null;
+    this._service?.setAuthToken(this.authToken);
   }
-  private storeAuthToken() {
+  private storeAuthTokenSession() {
     sessionStorage.setItem('authToken', JSON.stringify(this.authToken));
   }
 
@@ -35,8 +39,8 @@ export default class AuthStore {
     }
 
     runInAction(() => {
-      this.storeAuthToken();
       this.authToken = token;
+      this.storeAuthTokenSession();
     });
   }
 

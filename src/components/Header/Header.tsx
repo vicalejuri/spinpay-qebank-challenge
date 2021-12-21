@@ -17,7 +17,7 @@ const Header = () => {
         </Link>
         <div className={styles.right}>
           <span id="balance">R$ {funds?.balance}</span>
-          <Link to="/logout">Safe exit</Link>
+          <Link to="/auth/logout">Safe exit</Link>
         </div>
       </div>
     </header>
