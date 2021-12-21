@@ -4,9 +4,10 @@ import { Link } from 'react-router-dom';
 
 import { cn } from '$lib/utils';
 
-import style from './home.module.css';
+import styles from './home.module.css';
 
 import { useAuthStore } from '$features/auth/store';
+import SvgPlaceholder from '$components/SvgPlaceholder';
 
 const SubPage = lazy(() => import(/* webpackChunkName: "SubPage" */ '$lib/layouts/SubPage/SubPage'));
 
@@ -17,13 +18,26 @@ const AuthBox = observer(() => {
   useEffect(() => {
     (async () => {
       const profile = await authStore?.getProfile();
-      console.log('Home received profile', profile);
     })();
     return () => {};
   }, []);
 
-  return <h3>{authStore?.profile?.name || 'Loading'}</h3>;
+  return (
+    <span>
+      Welcome back, <br />
+      {authStore?.profile?.name || 'Loading'}
+    </span>
+  );
 });
+
+const Card = ({ to, title }: { to: string; title: string }) => {
+  return (
+    <Link to={to} className={styles.card}>
+      <h2 className={cn('headline5', styles.cardLabel)}>{title}</h2>
+      <img className={styles.cardMedia} src={SvgPlaceholder({ width: 100, height: 100 })} alt={title} />
+    </Link>
+  );
+};
 
 const home = () => {
   // const authStore = useAuthStore();
@@ -32,18 +46,18 @@ const home = () => {
   const [username, setUsername] = useState('John');
   console.log('home:loaded');
   return (
-    <SubPage title={'Home'} className={cn('home', 'pageWrapper')}>
-      <AuthBox />
+    <SubPage title={<AuthBox />} className={cn('home', 'pageWrapper')}>
+      {/* <AuthBox /> */}
       {/* <DepositBox /> */}
-      <ul className={style.launcher}>
+      <ul className={styles.launcher}>
         <li>
-          <Link to="/deposit">Deposit</Link>
+          <Card to="/deposit" title="Depósito" />
         </li>
         <li>
-          <Link to="/withdraw">Withdraw</Link>
+          <Card to="/withdraw" title="Withdraw" />
         </li>
         <li>
-          <Link to="/statement">statement </Link>
+          <Card to="/statement" title="Statement" />
         </li>
       </ul>
     </SubPage>

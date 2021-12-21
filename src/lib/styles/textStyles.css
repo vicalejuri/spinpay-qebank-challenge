@@ -11,6 +11,22 @@
   letter-spacing: 0.15px;
 }
 
+.headline5 {
+  font-family: Libre Franklin;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.headline2 {
+  font-family: Libre Franklin;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 24.2945px;
+  line-height: 32px;
+}
+
 .caption1 {
   font-family: Libre Franklin;
   font-size: 12px;
