@@ -4,10 +4,28 @@
 
 .header {
   height: var(--headerH);
+
+  color: var(--primary, #000);
+  background-color: var(--surface1, #d2d2d2);
+}
+
+.pageWrapper {
+  height: inherit;
   display: flex;
   flex-direction: row;
   align-items: center;
+}
 
-  color: var(--invert, white);
-  background-color: var(--surface2, #000000);
+.logo {
+  max-height: 100%;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.right {
+  margin-right: 2em;
+  margin-left: auto;
 }

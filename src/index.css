@@ -20,3 +20,9 @@ h6 {
   margin-block-start: 0;
   margin-block-end: 0;
 }
+
+.pageWrapper {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+}
