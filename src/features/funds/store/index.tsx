@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
 import { makeAutoObservable, runInAction } from 'mobx';
 
-import type { IFundService, IFundsStore } from '../types';
+import type { IFundBalanceToken, IFundService, IFundsStore, IFundStatement } from '../types';
 
 /**
  * Store API for funds management
  */
 export default class FundsStore implements IFundsStore {
   balance = 0;
-  _service: IFundService | null = null;
+  _service: IFundService;
 
   constructor(service: IFundService) {
     makeAutoObservable(this, {
@@ -18,12 +18,22 @@ export default class FundsStore implements IFundsStore {
     this._service = service;
   }
 
+  async getBalance(): Promise<IFundBalanceToken> {
+    return await this._service.balance();
+  }
+
+  async getStatement(): Promise<IFundStatement> {
+    const statement = await this._service.statement();
+    console.info('received ', statement);
+    return statement;
+  }
+
   async deposit(amount: number) {
-    const depositResponse = await this._service?.deposit({ amount, channel: 'atm' });
+    const depositResponse = await this._service.deposit({ amount, channel: 'atm' });
     runInAction(() => {
       this.balance += amount;
+      // todo: add to statement
     });
-    return depositResponse;
   }
 
   async withdraw(amount: number) {
@@ -32,7 +42,7 @@ export default class FundsStore implements IFundsStore {
 }
 
 /** React context helpers */
-export const FundsStoreContext = React.createContext<FundsStore | null>(null);
+export const FundsStoreContext = React.createContext<FundsStore>({} as FundsStore);
 
 /** Useful for UT mocks  */
 const FundsStoreProvider = ({ children, service }: { children: React.ReactNode; service: IFundService }) => {

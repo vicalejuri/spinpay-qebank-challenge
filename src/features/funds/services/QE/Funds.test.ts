@@ -70,8 +70,14 @@ describe('funds/services/QE/Funds - Fund management service module', () => {
       stubFetch(success(null));
 
       let service = new QEFundService({ endpoint, authToken });
-      let response = await service.deposit({ amount: 150, channel: 'bank', note: '' });
-      expect(response).to.equal(null);
+      let response = await service.deposit({
+        amount: 150,
+        channel: 'bank',
+        note: '',
+        id: '',
+        timestamp: ''
+      });
+      expect(response).to.equal(undefined);
     });
     it('should throw error if deposit failed', async () => {
       let service = new QEFundService({ endpoint: 'http://1.2.-1.1', authToken });
@@ -100,11 +106,12 @@ describe('funds/services/QE/Funds - Fund management service module', () => {
     };
 
     it('Should return a IBankTransactionLog', async () => {
-      stubFetch(success([exampleOfTransactionLog]));
+      stubFetch(success({ data: [exampleOfTransactionLog] }));
 
       let service = new QEFundService({ endpoint, authToken });
       let response = await service.statement();
       assert.isArray(response);
+      // console.info(response);
       // let firstTransaction = (response as array)[0];
       expect(response[0]).to.deep.equal(exampleOfTransactionLog);
     });

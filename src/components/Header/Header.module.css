@@ -1,5 +1,9 @@
+:root {
+  --headerH: 64px;
+}
+
 .header {
-  height: 64px;
+  height: var(--headerH);
   display: flex;
   flex-direction: row;
   align-items: center;

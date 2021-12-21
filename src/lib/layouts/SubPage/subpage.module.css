@@ -1,0 +1,17 @@
+.subpage {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  color: red;
+}
+
+.backButton {
+  position: absolute;
+  top: 0;
+  left: -10%;
+  padding: 8px;
+}

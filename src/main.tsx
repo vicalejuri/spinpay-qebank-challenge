@@ -4,7 +4,9 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { ErrorBoundary } from 'react-error-boundary';
 
-// import { StoreProvider } from './lib/stores';
+import './lib/styles/textStyles.css';
+
+// import StoreProvider from './lib/stores';
 
 const StoreProvider = lazy(() => import('./lib/stores'));
 const PancakeStackLayout = lazy(() => import('./lib/layouts/PancakeStack/PancakeStack'));
@@ -18,7 +20,7 @@ console.log('main.tsx:loaded');
 ReactDOM.render(
   <React.StrictMode>
     <Suspense fallback={<div>Loading...</div>}>
-      <ErrorBoundary FallbackComponent={({ error }) => <div>Something went wrong {error.message}</div>}>
+      <ErrorBoundary FallbackComponent={({ error }) => <pre>Something went wrong: {error.message}</pre>}>
         <StoreProvider>
           <Router>
             <Routes>

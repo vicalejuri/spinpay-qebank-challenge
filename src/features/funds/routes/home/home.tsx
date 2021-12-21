@@ -1,16 +1,14 @@
-import { useEffect, useState } from 'react';
-
+import { useEffect, useState, lazy } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
 
 import { cn } from '$lib/utils';
-// import { useStore } from '$lib/stores';
 
 import style from './home.module.css';
-// import { useFundsStore } from '$features/funds/store';
 
-import DepositBox from '../deposit/deposit';
 import { useAuthStore } from '$features/auth/store';
+
+const SubPage = lazy(() => import(/* webpackChunkName: "SubPage" */ '$lib/layouts/SubPage/SubPage'));
 
 const AuthBox = observer(() => {
   const authStore = useAuthStore();
@@ -34,7 +32,7 @@ const home = () => {
   const [username, setUsername] = useState('John');
   console.log('home:loaded');
   return (
-    <article id="home" className={cn('home')}>
+    <SubPage title={'Home'} className={cn('home', 'pageWrapper')}>
       <AuthBox />
       {/* <DepositBox /> */}
       <ul className={style.launcher}>
@@ -48,7 +46,7 @@ const home = () => {
           <Link to="/statement">statement </Link>
         </li>
       </ul>
-    </article>
+    </SubPage>
   );
 };
 

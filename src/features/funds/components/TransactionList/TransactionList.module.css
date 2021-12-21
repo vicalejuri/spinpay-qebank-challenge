@@ -1,0 +1,47 @@
+.list {
+  list-style: none;
+
+  padding: 0;
+  margin: 0;
+}
+
+.listItem {
+  display: grid;
+  grid-template-columns: auto 10fr auto;
+  grid-gap: 16px;
+}
+/** 
+ * Separators between items
+ */
+.listItem {
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+.listItem + .listItem {
+  border-top: 1px solid indianred;
+}
+.listItem:first-of-type {
+  padding-top: 0;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  background-color: indianred;
+}
+
+.description {
+  display: flex;
+  /** One line for each child */
+  flex-direction: column;
+  /** but aligning from bottom */
+  justify-content: flex-end;
+}
+
+.listItem[data-variant='deposit'] .amount {
+  color: green;
+}
+
+.listItem[data-variant='withdraw'] .amount {
+  color: red;
+}

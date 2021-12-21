@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, lazy } from 'react';
 
 import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
@@ -8,7 +8,8 @@ import { useStore } from '$lib/stores';
 
 import style from './home.module.css';
 import { useFundsStore } from '$features/funds/store';
-import { ErrorBoundary } from 'react-error-boundary';
+
+const SubPage = lazy(() => import(/* webpackChunkName: "SubPage" */ '$lib/layouts/SubPage/SubPage'));
 
 const Balance = observer(function Balance() {
   const funds = useFundsStore();
@@ -28,7 +29,7 @@ const DepositButton = observer(function DepositButton() {
   const deposit = useCallback(async () => {
     setLoading(true);
     try {
-      const r = await funds?.deposit(100);
+      const r = await funds.deposit(100);
     } catch (e: any) {
       setErrorMessage(e.message as string);
       console.error(e);
@@ -49,11 +50,10 @@ const DepositButton = observer(function DepositButton() {
 
 const DepositBox = () => {
   return (
-    <article id="deposit" className={cn('deposit')}>
-      <h2>Deposit</h2>
+    <SubPage title={'Deposit'} className={cn('deposit', 'pageWrapper')} backButton>
       <Balance />
       <DepositButton />
-    </article>
+    </SubPage>
   );
 };
 

@@ -2,12 +2,12 @@ export type DateISOString = string;
 
 export interface IFundsStore {
   balance: number;
-  _service: IFundService | null;
+  _service: IFundService;
 
   deposit(amount: number): Promise<void>;
   withdraw(amount: number): Promise<void>;
   getBalance(): Promise<IFundBalanceToken>;
-  getStatement(from: DateISOString, to: DateISOString): Promise<IFundStatement>;
+  getStatement(): Promise<IFundStatement>;
 }
 
 export interface IFundBalanceToken {
@@ -15,26 +15,14 @@ export interface IFundBalanceToken {
   timestamp: DateISOString;
 }
 
-export interface IFundStatement {
-  transactions: IFundTransaction[];
-}
+export type IFundStatement = IFundTransaction[];
 
 export interface IFundTransaction {
-  id: string;
-  type: IFundTransactionsTypes;
+  id?: string;
   amount: number;
   channel: string;
   note?: string;
-  timestamp: DateISOString;
-}
-
-export type IFundTransactionsTypes = 'deposit' | 'withdraw';
-
-export interface IFundService {
-  balance(): Promise<IFundBalanceToken>;
-  deposit(value: Omit<IFundTransaction, 'type'>): Promise<void>;
-  withdraw(value: Omit<IFundTransaction, 'type'>): Promise<void>;
-  statement(from: DateISOString, to: DateISOString): Promise<IFundStatement>;
+  timestamp?: DateISOString;
 }
 
 /**
@@ -45,15 +33,10 @@ export interface IFundService {
   deposit(transaction: Omit<IFundTransaction, 'type'>): Promise<void>;
   withdraw(transaction: Omit<IFundTransaction, 'type'>): Promise<void>;
   balance(): Promise<IFundBalanceToken>;
-  statement(): Promise<IFundTransactionLog[]>;
+  statement(): Promise<IFundStatement>;
 }
 
-export enum IFundTransactionsTypes {
-  deposit = 0,
-  withdraw = 1
-}
 export interface IFundTransaction {
-  type: IFundTransactionsTypes;
   amount: number;
   channel: string;
   note?: string;

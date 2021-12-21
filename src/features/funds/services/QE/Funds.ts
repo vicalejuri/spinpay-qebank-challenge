@@ -1,10 +1,4 @@
-import {
-  IFundService,
-  IFundBalanceToken,
-  IFundTransactionLog,
-  IFundTransaction,
-  IFundTransactionsTypes
-} from '../../types';
+import { IFundService, IFundBalanceToken, IFundTransactionLog, IFundTransaction, IFundStatement } from '../../types';
 
 import type { IAuthToken } from '$features/auth/types';
 import { fetch as globalFetch } from '../../../../lib/infra/fetch';
@@ -38,31 +32,45 @@ export default class QEFundService implements IFundService {
    * Deposit `value.amount` into this fund.
    */
   async deposit(value: Omit<IFundTransaction, 'type'>): Promise<void> {
-    // throw new EvalError('Service failed');
-    return this.fetch(`${this.endpoint}/accounts/${this.authToken.id}/deposit`, {
-      method: 'POST',
-      body: JSON.stringify({
-        type: IFundTransactionsTypes.deposit,
-        ...value
-      })
-    });
+    try {
+      await this.fetch(`${this.endpoint}/accounts/${this.authToken.id}/deposit`, {
+        method: 'POST',
+        body: JSON.stringify({
+          ...value
+        })
+      });
+      return;
+    } catch (e) {
+      /**
+       * deposit/withdraw service has some OAUTH bugs,
+       * some routes respond with a empty response, instead of valid json,
+       * so we need to handle this case.
+       *
+       * ignore this exception, should be considered a success
+       */
+      if (e instanceof SyntaxError && e.message.startsWith('Unexpected end of JSON input')) {
+        return;
+      } else {
+        throw e;
+      }
+    }
   }
   /**
    * Withdraw `amount` from this fund.
    */
   async withdraw(value: Omit<IFundTransaction, 'type'>): Promise<void> {
-    return this.fetch(`${this.endpoint}/accounts/${this.authToken.id}/withdraw`, {
+    return await this.fetch(`${this.endpoint}/accounts/${this.authToken.id}/withdraw`, {
       method: 'POST',
       body: JSON.stringify({
-        type: IFundTransactionsTypes.withdraw,
         ...value
       })
     });
   }
   async balance(): Promise<IFundBalanceToken> {
-    return this.fetch(`${this.endpoint}/accounts/${this.authToken.id}/balance`);
+    return await this.fetch(`${this.endpoint}/accounts/${this.authToken.id}/balance`);
   }
-  async statement(): Promise<IFundTransactionLog[]> {
-    return this.fetch(`${this.endpoint}/accounts/${this.authToken.id}/statement`);
+  async statement(): Promise<IFundStatement> {
+    const response = await this.fetch(`${this.endpoint}/accounts/${this.authToken.id}/statement`);
+    return response.data;
   }
 }
