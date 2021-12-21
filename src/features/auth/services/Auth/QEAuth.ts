@@ -33,12 +33,13 @@ export class QEAuth implements IAuthService {
      * Only allow a special queijo user
      * const authIsValid = username === 'queijo' && password === 'mortadela';
      */
-    const authIsValid = response?.accessToken !== '';
+    const authIsValid = response && response?.accessToken !== '';
 
     if (authIsValid) {
       const authToken = response?.accessToken;
       this.authToken = {
         id: String(Math.floor(Math.random() * 100)),
+        createdAt: new Date().toISOString(),
         authToken: authToken
       };
       return Promise.resolve(this.authToken);
@@ -61,18 +62,3 @@ export class QEAuth implements IAuthService {
     }
   }
 }
-//     return new Promise((resolve, reject) => {
-//       setTimeout(() => {
-//         resolve({
-//           id: '1234',
-//           name: 'Carla Coala',
-//           document: {
-//             type: 'CPF',
-//             value: '123456789-00'
-//           },
-//           phone: '19987654321'
-//         });
-//       }, 1000);
-//     });
-//   }
-// }

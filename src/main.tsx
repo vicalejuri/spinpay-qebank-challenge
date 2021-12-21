@@ -8,6 +8,13 @@ import './lib/styles/textStyles.css';
 
 // import StoreProvider from './lib/stores';
 
+if (process.env.NODE_ENV === 'development') {
+  (async () => {
+    const { worker } = await import('./mocks/browser');
+    worker.start();
+  })();
+}
+
 const StoreProvider = lazy(() => import('./lib/stores'));
 const PancakeStackLayout = lazy(() => import('./lib/layouts/PancakeStack/PancakeStack'));
 const Header = lazy(() => import('./components/Header/Header'));

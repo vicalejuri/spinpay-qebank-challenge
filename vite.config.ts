@@ -15,5 +15,6 @@ export default defineConfig({
       $tests: path.resolve('./tests')
     }
   },
+  assetsInclude: ['public/**/*'],
   plugins: [react()]
 });

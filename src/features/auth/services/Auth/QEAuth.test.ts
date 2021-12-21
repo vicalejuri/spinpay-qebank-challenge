@@ -30,10 +30,10 @@ describe('auth/services/QEAuth - Authentication service module', () => {
     });
     describe('auth OK', () => {
       const isAuthToken = (authToken: any): authToken is IAuthToken =>
-        authToken.id !== undefined && authToken.authToken !== undefined;
+        authToken.id !== undefined && authToken.createdAt !== undefined && authToken.authToken !== undefined;
 
       it('returns a valid IAuthToken', async () => {
-        stubFetch(success({ id: 123, authToken: '123456789' }));
+        stubFetch(success({ id: 123, accessToken: '123456789' }));
         let service = new QEAuth({ endpoint });
         const authToken = await service.login('queijo', 'mortadela');
         expect(authToken).to.not.equal(false);
@@ -43,7 +43,7 @@ describe('auth/services/QEAuth - Authentication service module', () => {
         }
       });
       it('And caches the authToken after successfull login', async () => {
-        stubFetch(success(''));
+        stubFetch(success({ id: 123, accessToken: '123456789' }));
         let service = new QEAuth({ endpoint });
         const authToken = await service.login('queijo', 'mortadela');
         expect(authToken).to.deep.equal(service.authToken);
@@ -62,7 +62,7 @@ describe('auth/services/QEAuth - Authentication service module', () => {
     it('clears the authToken property', async () => {
       let service = new QEAuth({ endpoint });
       await service.logout();
-      expect(service.authToken).to.equal(false);
+      expect(service.authToken).to.equal(null);
     });
   });
 });

@@ -1,3 +1,5 @@
+import { DateISOString } from '$features/funds/types';
+
 /**
  * A authentication token, used to identify the user.
  * pass along all requests to the server to identify as the user.
@@ -5,6 +7,7 @@
 export interface IAuthToken {
   id: string;
   authToken: string;
+  createdAt: DateISOString;
 }
 
 export interface IAuthService {
