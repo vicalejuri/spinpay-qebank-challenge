@@ -9,8 +9,8 @@ import { IAuthService, IAuthToken, IUserAccountHandle } from './types';
  */
 export default class AuthStore {
   profile: IUserAccountHandle | null = null;
-  authToken: IAuthToken | null = null;
   authenticated: boolean = false;
+  authToken: IAuthToken | null = null;
 
   _service: IAuthService | null = null;
 
@@ -19,16 +19,16 @@ export default class AuthStore {
       this,
       {
         _service: false
-      },
-      {
-        autoBind: true
-        // profile: observable,
-        // authToken: observable,
-        // authenticated: observable,
-        // deleteAuthTokenSession: action,
-        // login: action,
-        // getProfile: action
       }
+      // {
+      //   autoBind: true
+      // profile: observable,
+      // authToken: observable,
+      // authenticated: observable,
+      // deleteAuthTokenSession: action,
+      // login: action,
+      // getProfile: action
+      // }
     );
     this._service = service;
     this.restoreAuthTokenSession();

@@ -48,3 +48,10 @@ describe('lib/stores', () => {
     expect(wrapper.html()).to.contains('OK');
   });
 });
+
+/**
+ * criar teste para
+ *  criar store global
+ *  mudar authStore (login)
+ *  ver se fundsStore está com authToken OK, que deve vir da authStore
+ */

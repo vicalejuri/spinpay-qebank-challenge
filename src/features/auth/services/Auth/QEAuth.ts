@@ -14,6 +14,12 @@ export class QEAuth implements IAuthService {
     this.endpoint = endpoint;
   }
 
+  /** Type-guard */
+  isAuthenticated(x: null | IAuthToken): x is IAuthToken {
+    // console.trace();
+    return x !== null;
+  }
+
   setAuthToken(authToken: IAuthToken | null) {
     this.authToken = authToken;
   }
@@ -58,8 +64,7 @@ export class QEAuth implements IAuthService {
   }
 
   async profile(): Promise<IUserAccountHandle> {
-    const isAuthenticated = (x: null | IAuthToken): x is IAuthToken => x !== null;
-    if (isAuthenticated(this.authToken)) {
+    if (this.isAuthenticated(this.authToken)) {
       return await fetch(`${this.endpoint}/${this.authToken.id}/user`);
     } else {
       return Promise.reject(new Error('User not authenticated'));

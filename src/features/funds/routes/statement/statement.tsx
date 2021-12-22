@@ -1,6 +1,6 @@
 import { useCallback, useState, lazy, useEffect } from 'react';
 import type { IFundStatement } from '$features/funds/types';
-import { useFundsStore } from '$features/funds/store';
+import { useFundsStore } from '$features/funds/store/funds';
 
 import { cn } from '$lib/utils';
 import { observer } from 'mobx-react-lite';

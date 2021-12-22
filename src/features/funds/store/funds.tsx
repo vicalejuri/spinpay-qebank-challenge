@@ -65,12 +65,10 @@ const FundsStoreProvider = ({ children, service }: { children: React.ReactNode; 
   return <FundsStoreContext.Provider value={store}>{children}</FundsStoreContext.Provider>;
 };
 
-function useFundsStore() {
+export function useFundsStore() {
   const context = useContext(FundsStoreContext);
   if (context === undefined) {
     throw new Error('useFundsStore must be used within a <FundsStoreProvider>.');
   }
   return context;
 }
-
-export { useFundsStore };

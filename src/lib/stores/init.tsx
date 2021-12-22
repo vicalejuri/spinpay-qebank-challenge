@@ -3,7 +3,7 @@ import { autorun, configure } from 'mobx';
 
 import { composeProviders } from '../utils/composeProviders';
 
-import FundsStore, { FundsStoreContext } from '$features/funds/store';
+import FundsStore, { FundsStoreContext } from '$features/funds/store/funds';
 import AuthStore, { AuthStoreContext } from '$features/auth/store';
 
 import AuthService from '$features/auth/services/Auth';
@@ -35,12 +35,8 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   let funds = new FundsStore(
     auth,
     new FundsService({
-      endpoint: String(import.meta.env.VITE_SERVICE_QEBANK_ENDPOINT),
-      authToken: {
-        id: '1',
-        authToken: 'abcdefg',
-        createdAt: '2020-01-01T00:00:00.000Z'
-      }
+      endpoint: String(import.meta.env.VITE_SERVICE_QEBANK_ENDPOINT)
+      // authToken: auth.authToken
     })
   );
 

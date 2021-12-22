@@ -7,10 +7,10 @@ import { ErrorBoundary } from 'react-error-boundary';
 import './lib/styles/textStyles.css';
 
 // import StoreProvider from './lib/stores';
-import RequireAuth from '$features/hooks/requireAuth';
+// import RequireAuth from '$features/auth/hooks/RequireAuth';
 
 if (process.env.NODE_ENV === 'development') {
-  (async () => {
+  (async function mock() {
     const { worker } = await import('./mocks/browser');
     worker.start({
       onUnhandledRequest: 'bypass'
@@ -21,7 +21,7 @@ if (process.env.NODE_ENV === 'development') {
 const StoreProvider = lazy(() => import('./lib/stores'));
 const PancakeStackLayout = lazy(() => import('./lib/layouts/PancakeStack/PancakeStack'));
 const Header = lazy(() => import('./components/Header/Header'));
-const Home = lazy(() => import('./features/funds/routes/home/home'));
+const FundsHome = lazy(() => import('./features/funds/routes/home/home'));
 const Deposit = lazy(() => import('./features/funds/routes/deposit/deposit'));
 const Withdraw = lazy(() => import('./features/funds/routes/withdraw/withdraw'));
 const Statement = lazy(() => import('./features/funds/routes/statement/statement'));
@@ -35,19 +35,13 @@ ReactDOM.render(
         <StoreProvider>
           <Router>
             <Routes>
+              <Route index element={<Login />} />
               <Route path="/auth" element={<PancakeStackLayout />}>
                 <Route path="login" element={<Login />} />
                 <Route path="logout" element={<Logout />} />
               </Route>
-              <Route
-                path="/funds"
-                element={
-                  <RequireAuth>
-                    <PancakeStackLayout first={<Header />} />
-                  </RequireAuth>
-                }
-              >
-                <Route index element={<Home />} />
+              <Route path="/funds" element={<PancakeStackLayout first={<Header />} />}>
+                <Route index element={<FundsHome />} />
                 <Route path="deposit" element={<Deposit />} />
                 <Route path="withdraw" element={<Withdraw />} />
                 <Route path="statement" element={<Statement />} />

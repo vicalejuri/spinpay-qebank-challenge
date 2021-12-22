@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { cn } from '$lib/utils';
 
 import style from './home.module.css';
-import { useFundsStore } from '$features/funds/store';
+import { useFundsStore } from '$features/funds/store/funds';
 
 const SubPage = lazy(() => import(/* webpackChunkName: "SubPage" */ '$lib/layouts/SubPage/SubPage'));
 

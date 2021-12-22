@@ -1,6 +1,8 @@
 import { IFundService, IFundBalanceToken, IFundTransaction, IFundStatement } from '../../types';
 
 import type { IAuthToken } from '$features/auth/types';
+import QEAuthService from '$features/auth/services';
+
 import { fetch as globalFetch } from '../../../../lib/infra/fetch';
 import { AssertionError } from 'chai';
 
@@ -8,18 +10,9 @@ import { AssertionError } from 'chai';
  * A module to talk to QEBank funds endpoint using REST protocol.
  * Manage deposit, withdraw, balance, statement methods
  */
-export default class QEFundService implements IFundService {
-  endpoint: string;
-  authToken: IAuthToken | null = null;
-
-  constructor({ endpoint, authToken }: { endpoint: string; authToken: IAuthToken | null }) {
-    this.endpoint = endpoint || 'https://localhost:3000';
-    this.authToken = authToken;
-  }
-
-  isAuthenticated(x: null | IAuthToken): x is IAuthToken {
-    // console.trace();
-    return x !== null;
+export default class QEFundService extends QEAuthService {
+  constructor({ endpoint }: { endpoint: string }) {
+    super({ endpoint });
   }
 
   /** Pass along the auth token, stamping the request with authToken */

@@ -15,7 +15,14 @@ export type Variants = 'centered';
  *
  * {first} can be ommited, to generate only a full-screen <main>
  */
-function PancakeStack({ first, variant = 'centered' }: { first?: JSX.Element; variant?: Variants }): JSX.Element {
+function PancakeStack({
+  first,
+  variant = 'centered'
+}: {
+  first?: JSX.Element;
+  variant?: Variants;
+  children?: JSX.Element;
+}): JSX.Element {
   const FirstComponent = first ? () => first : () => <h1></h1>;
   return (
     <section className={styles.pancake}>

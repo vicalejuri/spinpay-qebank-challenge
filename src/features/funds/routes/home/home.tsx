@@ -10,7 +10,8 @@ import { useAuthStore } from '$features/auth/store';
 import SvgPlaceholder from '$components/SvgPlaceholder';
 
 import Card from '$components/Card/Card';
-import { useFundsStore } from '$features/funds/store';
+import { useFundsStore } from '$features/funds/store/funds';
+import { RequireAuth } from '$features/auth/hooks/RequireAuth';
 
 const SubPage = lazy(() => import(/* webpackChunkName: "SubPage" */ '$lib/layouts/SubPage/SubPage'));
 
@@ -50,22 +51,25 @@ const home = () => {
   // const [username, setUsername] = useState('John');
   // console.log('home:loaded');
   return (
-    <SubPage title={<AuthBox />} className={cn('home', 'pageWrapper')}>
-      {/* <AuthBox /> */}
-      {/* <DepositBox /> */}
-      <ul className={styles.launcher}>
-        <li>
-          <LinkCard to="/funds/deposit" title="Depósito" />
-        </li>
-        <li>
-          <LinkCard to="/funds/withdraw" title="Withdraw" />
-        </li>
-        <li>
-          <LinkCard to="/funds/statement" title="Statement" />
-        </li>
-      </ul>
-    </SubPage>
+    <RequireAuth>
+      <SubPage title={<AuthBox />} className={cn('home', 'pageWrapper')}>
+        {/* <AuthBox /> */}
+        {/* <DepositBox /> */}
+        <ul className={styles.launcher}>
+          <li>
+            <LinkCard to="/funds/deposit" title="Depósito" />
+          </li>
+          <li>
+            <LinkCard to="/funds/withdraw" title="Withdraw" />
+          </li>
+          <li>
+            <LinkCard to="/funds/statement" title="Statement" />
+          </li>
+        </ul>
+      </SubPage>
+    </RequireAuth>
   );
 };
 
-export default observer(home);
+const Home = observer(home);
+export default Home;
