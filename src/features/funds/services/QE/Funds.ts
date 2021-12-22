@@ -25,7 +25,7 @@ export default class QEFundService implements IFundService {
   fetch(url: string, options?: RequestInit): Promise<any> {
     /** Make sure we're authenticated before proceeding */
     if (!this.isAuthenticated(this.authToken)) {
-      throw new AssertionError('Unauthenticated');
+      throw new EvalError('Unauthenticated');
     }
     return globalFetch(url, {
       ...options,

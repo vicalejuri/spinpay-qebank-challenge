@@ -10,17 +10,20 @@ import { useAuthStore } from '$features/auth/store';
 import SvgPlaceholder from '$components/SvgPlaceholder';
 
 import Card from '$components/Card/Card';
+import { useFundsStore } from '$features/funds/store';
 
 const SubPage = lazy(() => import(/* webpackChunkName: "SubPage" */ '$lib/layouts/SubPage/SubPage'));
 
 const AuthBox = observer(() => {
   const authStore = useAuthStore();
+  const fundsStore = useFundsStore();
   const profile = authStore?.profile;
 
   /** Fetch profile On first render */
   useEffect(() => {
     (async () => {
       const profile = await authStore?.getProfile();
+      await fundsStore.getBalance();
     })();
     return () => {};
   }, []);

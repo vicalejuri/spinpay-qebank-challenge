@@ -1,13 +1,15 @@
 import React, { useContext } from 'react';
 import { makeAutoObservable, runInAction } from 'mobx';
 
-import type { IFundBalanceToken, IFundService, IFundsStore, IFundStatement } from '../types';
+import type { DateISOString, IFundBalanceToken, IFundService, IFundsStore, IFundStatement } from '../types';
+import { fromISOString } from '$lib/utils';
 
 /**
  * Store API for funds management
  */
 export default class FundsStore implements IFundsStore {
   balance = 0;
+  balanceTimestamp: Date = new Date(fromISOString('1900-01-01'));
   _service: IFundService;
 
   constructor(service: IFundService) {
@@ -19,12 +21,14 @@ export default class FundsStore implements IFundsStore {
   }
 
   async getBalance(): Promise<IFundBalanceToken> {
-    return await this._service.balance();
+    const response = await this._service.balance();
+    this.balance = response.balance;
+    this.balanceTimestamp = new Date(fromISOString(response.timestamp));
+    return response;
   }
 
   async getStatement(): Promise<IFundStatement> {
     const statement = await this._service.statement();
-    console.info('received ', statement);
     return statement;
   }
 

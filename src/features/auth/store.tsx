@@ -24,12 +24,21 @@ export default class AuthStore {
   /**
    * Remember-me functionality, storing the auth object in the SESSION storage.
    */
-  private restoreAuthTokenSession() {
-    this.authToken = (JSON.stringify(sessionStorage.getItem('authToken')) as unknown as IAuthToken) || null;
-    this._service?.setAuthToken(this.authToken);
+  private async restoreAuthTokenSession() {
+    const token = sessionStorage.getItem('authToken');
+    if (!token) return;
+
+    const authToken = JSON.parse(token) as IAuthToken;
+    if (authToken) {
+      this.authToken = authToken;
+      this._service?.setAuthToken(authToken);
+    }
   }
   private storeAuthTokenSession() {
     sessionStorage.setItem('authToken', JSON.stringify(this.authToken));
+  }
+  public deleteAuthTokenSession() {
+    sessionStorage.removeItem('authToken');
   }
 
   async login() {
