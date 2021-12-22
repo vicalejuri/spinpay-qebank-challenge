@@ -22,7 +22,6 @@ const AuthBox = observer(() => {
   /** Fetch profile On first render */
   useEffect(() => {
     (async () => {
-      const profile = await authStore?.getProfile();
       await fundsStore.getBalance();
     })();
     return () => {};
@@ -49,7 +48,7 @@ const home = () => {
   // const funds = useFundsStore();
 
   // const [username, setUsername] = useState('John');
-  console.log('home:loaded');
+  // console.log('home:loaded');
   return (
     <SubPage title={<AuthBox />} className={cn('home', 'pageWrapper')}>
       {/* <AuthBox /> */}

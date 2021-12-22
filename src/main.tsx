@@ -7,11 +7,14 @@ import { ErrorBoundary } from 'react-error-boundary';
 import './lib/styles/textStyles.css';
 
 // import StoreProvider from './lib/stores';
+import RequireAuth from '$features/hooks/requireAuth';
 
 if (process.env.NODE_ENV === 'development') {
   (async () => {
     const { worker } = await import('./mocks/browser');
-    worker.start();
+    worker.start({
+      onUnhandledRequest: 'bypass'
+    });
   })();
 }
 
@@ -36,7 +39,14 @@ ReactDOM.render(
                 <Route path="login" element={<Login />} />
                 <Route path="logout" element={<Logout />} />
               </Route>
-              <Route path="/funds" element={<PancakeStackLayout first={<Header />} />}>
+              <Route
+                path="/funds"
+                element={
+                  <RequireAuth>
+                    <PancakeStackLayout first={<Header />} />
+                  </RequireAuth>
+                }
+              >
                 <Route index element={<Home />} />
                 <Route path="deposit" element={<Deposit />} />
                 <Route path="withdraw" element={<Withdraw />} />

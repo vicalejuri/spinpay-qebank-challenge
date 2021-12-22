@@ -18,6 +18,7 @@ export default class QEFundService implements IFundService {
   }
 
   isAuthenticated(x: null | IAuthToken): x is IAuthToken {
+    // console.trace();
     return x !== null;
   }
 

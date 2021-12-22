@@ -7,8 +7,19 @@ import { observer } from 'mobx-react-lite';
 import { useFundsStore } from '$features/funds/store';
 import { cn } from '$lib/utils';
 
-const Header = () => {
+const BalanceQuickLook = observer(() => {
   const funds = useFundsStore();
+  return (
+    <span>
+      {funds?.balance.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      })}
+    </span>
+  );
+});
+
+const Header = () => {
   return (
     <header className={styles.header}>
       <div className={cn('pageWrapper', styles.pageWrapper)}>
@@ -16,7 +27,7 @@ const Header = () => {
           <img src={SvgPlaceholder({ width: 100, height: 104 })} />
         </Link>
         <div className={styles.right}>
-          <span id="balance">R$ {funds?.balance}</span>
+          <BalanceQuickLook />
           <Link to="/auth/logout">Safe exit</Link>
         </div>
       </div>
@@ -24,4 +35,4 @@ const Header = () => {
   );
 };
 
-export default observer(Header);
+export default Header;

@@ -1,8 +1,10 @@
 import React, { useContext } from 'react';
-import { makeAutoObservable, runInAction } from 'mobx';
+import { makeObservable, observable, action, computed, runInAction } from 'mobx';
 
 import type { DateISOString, IFundBalanceToken, IFundService, IFundsStore, IFundStatement } from '../types';
 import { fromISOString } from '$lib/utils';
+
+import AuthStore from '$features/auth/store';
 
 /**
  * Store API for funds management
@@ -10,20 +12,27 @@ import { fromISOString } from '$lib/utils';
 export default class FundsStore implements IFundsStore {
   balance = 0;
   balanceTimestamp: Date = new Date(fromISOString('1900-01-01'));
+
   _service: IFundService;
 
-  constructor(service: IFundService) {
-    makeAutoObservable(this, {
-      /** Dont annotate _service */
-      _service: false
+  constructor(auth: AuthStore, service: IFundService) {
+    makeObservable(this, {
+      balance: observable,
+      balanceTimestamp: observable,
+      getBalance: action,
+      getStatement: action,
+      deposit: action,
+      withdraw: action
     });
     this._service = service;
   }
 
   async getBalance(): Promise<IFundBalanceToken> {
     const response = await this._service.balance();
-    this.balance = response.balance;
-    this.balanceTimestamp = new Date(fromISOString(response.timestamp));
+    runInAction(() => {
+      this.balance = response.balance;
+      this.balanceTimestamp = new Date(fromISOString(response.timestamp));
+    });
     return response;
   }
 
@@ -41,7 +50,9 @@ export default class FundsStore implements IFundsStore {
   }
 
   async withdraw(amount: number) {
-    this.balance -= amount;
+    runInAction(() => {
+      this.balance -= amount;
+    });
   }
 }
 
@@ -50,7 +61,7 @@ export const FundsStoreContext = React.createContext<FundsStore>({} as FundsStor
 
 /** Useful for UT mocks  */
 const FundsStoreProvider = ({ children, service }: { children: React.ReactNode; service: IFundService }) => {
-  let store = new FundsStore(service);
+  let store = new FundsStore(null, service);
   return <FundsStoreContext.Provider value={store}>{children}</FundsStoreContext.Provider>;
 };
 

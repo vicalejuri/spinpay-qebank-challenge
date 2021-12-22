@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { makeAutoObservable, runInAction } from 'mobx';
+import { action, makeAutoObservable, makeObservable, observable, runInAction } from 'mobx';
 
 import { IAuthService, IAuthToken, IUserAccountHandle } from './types';
 
@@ -10,13 +10,26 @@ import { IAuthService, IAuthToken, IUserAccountHandle } from './types';
 export default class AuthStore {
   profile: IUserAccountHandle | null = null;
   authToken: IAuthToken | null = null;
+  authenticated: boolean = false;
+
   _service: IAuthService | null = null;
 
   constructor(service: IAuthService) {
-    makeAutoObservable(this, {
-      /** Dont annotate _service */
-      _service: false
-    });
+    makeAutoObservable(
+      this,
+      {
+        _service: false
+      },
+      {
+        autoBind: true
+        // profile: observable,
+        // authToken: observable,
+        // authenticated: observable,
+        // deleteAuthTokenSession: action,
+        // login: action,
+        // getProfile: action
+      }
+    );
     this._service = service;
     this.restoreAuthTokenSession();
   }
@@ -30,8 +43,11 @@ export default class AuthStore {
 
     const authToken = JSON.parse(token) as IAuthToken;
     if (authToken) {
-      this.authToken = authToken;
-      this._service?.setAuthToken(authToken);
+      runInAction(() => {
+        this.authToken = authToken;
+        this.authenticated = true;
+        this._service?.setAuthToken(authToken);
+      });
     }
   }
   private storeAuthTokenSession() {
@@ -39,8 +55,13 @@ export default class AuthStore {
   }
   public deleteAuthTokenSession() {
     sessionStorage.removeItem('authToken');
+    this.authToken = null;
+    this.authenticated = false;
   }
 
+  /**
+   * The public methods for login
+   */
   async login() {
     const token = await this._service?.login('queijo', 'goiabada');
     if (!token) {
@@ -49,6 +70,7 @@ export default class AuthStore {
 
     runInAction(() => {
       this.authToken = token;
+      this.authenticated = true;
       this.storeAuthTokenSession();
     });
   }

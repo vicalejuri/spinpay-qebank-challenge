@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 
 import { useAuthStore } from '$features/auth/store';
+import { observer } from 'mobx-react-lite';
 
-export default function Logout() {
+export default observer(function Logout() {
   const authStore = useAuthStore();
 
   useEffect(() => {
@@ -10,4 +11,4 @@ export default function Logout() {
   }, []);
 
   return <section className="logout">Logout</section>;
-}
+});

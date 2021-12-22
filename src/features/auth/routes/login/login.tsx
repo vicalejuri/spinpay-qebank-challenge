@@ -21,7 +21,7 @@ export const Login = function () {
     try {
       setTitle('Verificando seu cartão...');
       await authStore?.login();
-      // throw new Error('Offline');
+      await authStore?.getProfile();
       await nav('/funds');
     } catch (e: unknown) {
       console.error(e);

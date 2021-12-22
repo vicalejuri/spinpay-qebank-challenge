@@ -4,7 +4,6 @@ import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
 
 import { cn } from '$lib/utils';
-import { useStore } from '$lib/stores';
 
 import style from './home.module.css';
 import { useFundsStore } from '$features/funds/store';
