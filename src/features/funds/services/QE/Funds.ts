@@ -1,16 +1,14 @@
 import { IFundService, IFundBalanceToken, IFundTransaction, IFundStatement } from '../../types';
 
-import type { IAuthToken } from '$features/auth/types';
-import QEAuthService from '$features/auth/services';
+import QEAuthService, { UnauthorizedError } from '$features/auth/services';
 
 import { fetch as globalFetch } from '../../../../lib/infra/fetch';
-import { AssertionError } from 'chai';
 
 /**
  * A module to talk to QEBank funds endpoint using REST protocol.
  * Manage deposit, withdraw, balance, statement methods
  */
-export default class QEFundService extends QEAuthService {
+export default class QEFundService extends QEAuthService implements IFundService {
   constructor({ endpoint }: { endpoint: string }) {
     super({ endpoint });
   }
@@ -19,14 +17,14 @@ export default class QEFundService extends QEAuthService {
   fetch(url: string, options?: RequestInit): Promise<any> {
     /** Make sure we're authenticated before proceeding */
     if (!this.isAuthenticated(this.authToken)) {
-      throw new EvalError('Unauthenticated');
+      throw UnauthorizedError;
     }
     return globalFetch(url, {
       ...options,
       headers: {
         ...options?.headers,
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.authToken?.authToken}`
+        Authorization: `Bearer ${this.authToken?.token}`
       }
     });
   }

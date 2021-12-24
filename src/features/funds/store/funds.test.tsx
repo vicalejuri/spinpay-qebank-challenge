@@ -5,10 +5,33 @@ import sinon from 'sinon';
 import { shallow, mount, configure } from 'enzyme';
 import '$tests/setup/index';
 
-import FundsStore from './funds';
 import { IFundBalanceToken, IFundService, IFundTransaction } from '../types';
 
+import FundsStore from './funds';
+
+import AuthStore from '$features/auth/store/auth';
+import QEAuth, { UnauthorizedError } from '$features/auth/services';
+
+import { IAuthToken } from '$features/auth/types';
+import QEFundService from '../services/QE/Funds';
+
+const endpoint = 'http://localhost';
+const authToken = { id: '1', token: 'qwerty', createdAt: new Date().toISOString() };
+
+const fakeTransaction: IFundTransaction[] = [
+  {
+    amount: 0,
+    channel: 'atm',
+    timestamp: '2020-01-01T00:00:00.000Z',
+    id: '1',
+    note: ''
+  }
+];
+
 const fakeFundsService: IFundService = {
+  endpoint,
+  authToken,
+  setAuthToken: (authToken: IAuthToken) => true,
   deposit: (transaction: IFundTransaction) => Promise.resolve(),
   withdraw: (transaction: IFundTransaction) => Promise.resolve(),
   balance: () =>
@@ -16,37 +39,56 @@ const fakeFundsService: IFundService = {
       balance: 0,
       timestamp: '2020-01-01T00:00:00.000Z'
     } as IFundBalanceToken),
-  statement: () =>
-    Promise.resolve([
-      {
-        amount: 0,
-        channel: 'atm',
-        date: '2020-01-01T00:00:00.000Z',
-        id: '1',
-        note: ''
-      } as IFundTransaction
-    ])
+  statement: () => Promise.resolve(fakeTransaction)
 };
 
 describe('funds/store - FundsStore Domain module', () => {
-  it('should obey public interface IFundsStore', () => {
-    const store = new FundsStore(null, fakeFundsService);
-    assert.isDefined(store._service);
-    assert.isNumber(store.balance);
-  });
+  describe('new FundsStore(auth,service)', () => {
+    it('should be synced with authorization from `auth` store', async () => {
+      const authFakeService = new QEAuth({ endpoint });
+      const authStore = new AuthStore(authFakeService);
 
+      const fundsService = new QEFundService({ endpoint });
+      const fundsStore = new FundsStore(authStore, fundsService);
+
+      // fake a login
+      authStore.setAuthToken({ id: '1', token: 'qwerty', createdAt: new Date().toISOString() });
+
+      // funds store gets the access token update?
+      expect(fundsStore._service.authToken).to.equal(authStore.authToken);
+    });
+  });
   describe('new FundsStore(service)', () => {
     it('Should create a new instance of Store, using `service`', () => {
       const store = new FundsStore(null, fakeFundsService);
       assert.isDefined(store._service);
       assert.isNumber(store.balance);
     });
+    it('service should allow only authorized users', () => {
+      const fundsService = new QEFundService({ endpoint });
+      const fundsStore = new FundsStore(null, fundsService);
+
+      const doIt = async () => {
+        await fundsStore.getBalance();
+      };
+      return expect(doIt()).to.be.rejectedWith(UnauthorizedError);
+    });
   });
-  describe('Should only work with authorization', () => {
-    it('Should check authorization token in the fetch methods', () => {
+  describe('async getStatement()', () => {
+    it('should return the statement and update store.statement', async () => {
       const store = new FundsStore(null, fakeFundsService);
-      assert.isDefined(store._service);
-      assert.isNumber(store.balance);
+      const statement = await store.getStatement();
+
+      expect(statement).to.eql(fakeTransaction);
+    });
+  });
+  describe('async getBalance()', () => {
+    it('should return the balance and update store.balance', async () => {
+      const store = new FundsStore(null, fakeFundsService);
+      const balance = await store.getBalance();
+
+      expect(balance).to.eql({ balance: 0, timestamp: '2020-01-01T00:00:00.000Z' });
+      expect(store.balance).to.eql(0);
     });
   });
   describe('async deposit(amount)', () => {

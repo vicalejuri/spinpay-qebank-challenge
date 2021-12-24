@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
-import { makeObservable, observable, action, computed, runInAction } from 'mobx';
+import { makeObservable, observable, action, computed, runInAction, autorun, reaction } from 'mobx';
 
-import type { DateISOString, IFundBalanceToken, IFundService, IFundsStore, IFundStatement } from '../types';
+import type { IFundBalanceToken, IFundService, IFundsStore, IFundStatement } from '../types';
 import { fromISOString } from '$lib/utils';
 
-import AuthStore from '$features/auth/store';
+import AuthStore from '$features/auth/store/auth';
 
 /**
  * Store API for funds management
@@ -12,6 +12,7 @@ import AuthStore from '$features/auth/store';
 export default class FundsStore implements IFundsStore {
   balance = 0;
   balanceTimestamp: Date = new Date(fromISOString('1900-01-01'));
+  statement: IFundStatement = null;
 
   _service: IFundService;
 
@@ -25,6 +26,16 @@ export default class FundsStore implements IFundsStore {
       withdraw: action
     });
     this._service = service;
+
+    /**
+     * Links the reactive property `auth.authToken` to `_service.authToken`
+     */
+    reaction(
+      () => auth?.authToken,
+      (authToken) => {
+        this._service.setAuthToken(auth.authToken);
+      }
+    );
   }
 
   async getBalance(): Promise<IFundBalanceToken> {
@@ -38,6 +49,9 @@ export default class FundsStore implements IFundsStore {
 
   async getStatement(): Promise<IFundStatement> {
     const statement = await this._service.statement();
+    runInAction(() => {
+      this.statement = statement;
+    });
     return statement;
   }
 

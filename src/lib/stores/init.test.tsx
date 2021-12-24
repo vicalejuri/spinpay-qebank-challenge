@@ -8,7 +8,7 @@ import '$tests/setup/index';
 import { observer } from 'mobx-react-lite';
 
 import { StoreProvider } from './init';
-import { useAuthStore } from '$features/auth/store';
+import { useAuthStore } from '$features/auth/store/auth';
 
 describe('lib/stores', () => {
   describe('<StoreProvider>', () => {

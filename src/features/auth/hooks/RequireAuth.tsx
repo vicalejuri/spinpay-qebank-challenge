@@ -1,4 +1,4 @@
-import { useAuthStore } from '$features/auth/store';
+import { useAuthStore } from '$features/auth/store/auth';
 // import { Navigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { trace } from 'mobx';

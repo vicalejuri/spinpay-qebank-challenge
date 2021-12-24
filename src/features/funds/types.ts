@@ -1,4 +1,4 @@
-export type DateISOString = string;
+import { IAuthToken } from '$features/auth/types';
 
 export interface IFundsStore {
   balance: number;
@@ -30,22 +30,15 @@ export interface IFundTransaction {
  * and to allow balance|deposit|withdraw|statement transactions.
  */
 export interface IFundService {
+  endpoint: string;
+  authToken: IAuthToken;
+
+  setAuthToken(authToken: IAuthToken);
   deposit(transaction: Omit<IFundTransaction, 'type'>): Promise<void>;
   withdraw(transaction: Omit<IFundTransaction, 'type'>): Promise<void>;
   balance(): Promise<IFundBalanceToken>;
   statement(): Promise<IFundStatement>;
 }
-
-/**
- * A transaction log is a history of transactions made to this fund.
- */
-// export interface IFundTransactionLog {
-//   id: number | string;
-//   amount: number;
-//   date: DateISOString;
-//   channel: 'ATM' | 'online' | string;
-//   note?: string;
-// }
 
 /**
  * A balance of the fund at `timestamp` date.

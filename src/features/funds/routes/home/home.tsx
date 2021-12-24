@@ -6,12 +6,12 @@ import { cn } from '$lib/utils';
 
 import styles from './home.module.css';
 
-import { useAuthStore } from '$features/auth/store';
+import { useAuthStore } from '$features/auth/store/auth';
 import SvgPlaceholder from '$components/SvgPlaceholder';
 
 import Card from '$components/Card/Card';
 import { useFundsStore } from '$features/funds/store/funds';
-import { RequireAuth } from '$features/auth/hooks/RequireAuth';
+import RequireAuth from '$features/auth/hooks/RequireAuth';
 
 const SubPage = lazy(() => import(/* webpackChunkName: "SubPage" */ '$lib/layouts/SubPage/SubPage'));
 

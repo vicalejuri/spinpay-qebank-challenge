@@ -38,11 +38,11 @@ describe('auth/services/QEAuth - Authentication service module', () => {
         const authToken = await service.login('queijo', 'mortadela');
         expect(authToken).to.not.equal(false);
         if (isAuthToken(authToken)) {
-          assert.isString(authToken.authToken, 'authToken property is a String');
+          assert.isString(authToken.token, 'authToken property is a String');
           assert.isString(authToken.id, 'id is a String');
         }
       });
-      it('And caches the authToken after successfull login', async () => {
+      it('And save the authToken in the instance, after successfull login', async () => {
         stubFetch(success({ id: 123, accessToken: '123456789' }));
         let service = new QEAuth({ endpoint });
         const authToken = await service.login('queijo', 'mortadela');

@@ -6,7 +6,7 @@ import SvgPlaceholder from '../SvgPlaceholder';
 import { observer } from 'mobx-react-lite';
 import { useFundsStore } from '$features/funds/store/funds';
 import { cn } from '$lib/utils';
-import { useAuthStore } from '$features/auth/store';
+import { useAuthStore } from '$features/auth/store/auth';
 
 const BalanceQuickLook = observer(() => {
   const funds = useFundsStore();

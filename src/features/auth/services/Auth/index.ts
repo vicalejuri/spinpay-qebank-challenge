@@ -1,1 +1,1 @@
-export { QEAuth as default } from './QEAuth';
+export { QEAuth as default, UnauthorizedError } from './QEAuth';

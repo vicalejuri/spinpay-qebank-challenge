@@ -22,7 +22,7 @@ describe('funds/services/QE/Funds - Fund management service module', () => {
   const authToken: IAuthToken = {
     id: String(Math.floor(Math.random() * 100)),
     createdAt: new Date().toISOString(),
-    authToken: '123456789'
+    token: '123456789'
   };
 
   it('should obey public interface IFundService', () => {
@@ -32,7 +32,7 @@ describe('funds/services/QE/Funds - Fund management service module', () => {
     expect(service.deposit).instanceOf(Function);
     expect(service.withdraw).instanceOf(Function);
     expect(service.statement).instanceOf(Function);
-    expect(service.authToken).to.deep.equal(authToken);
+    expect(service.authToken).to.deep.equal(null);
   });
   it('Should authenticate the requests via OAuth2 Bearer-token', async () => {
     const st = stub(window, 'fetch');
@@ -42,6 +42,8 @@ describe('funds/services/QE/Funds - Fund management service module', () => {
       return success('');
     });
     const service = new QEFundService({ endpoint });
+    service.setAuthToken(authToken);
+
     let request = service.balance();
     let response = await request;
   });
@@ -55,6 +57,8 @@ describe('funds/services/QE/Funds - Fund management service module', () => {
       stubFetch(success(balanceExample));
 
       let service = new QEFundService({ endpoint });
+      service.setAuthToken(authToken);
+
       let response = await service.balance();
       expect(response).to.deep.equal(balanceExample);
     });
@@ -62,6 +66,8 @@ describe('funds/services/QE/Funds - Fund management service module', () => {
       stubFetch(error('Server offline'));
 
       let service = new QEFundService({ endpoint });
+      service.setAuthToken(authToken);
+
       return expect(service.balance()).to.be.rejectedWith(Error, 'Server offline');
     });
   });
@@ -70,6 +76,8 @@ describe('funds/services/QE/Funds - Fund management service module', () => {
       stubFetch(success(null));
 
       let service = new QEFundService({ endpoint });
+      service.setAuthToken(authToken);
+
       let response = await service.deposit({
         amount: 150,
         channel: 'bank',
@@ -81,6 +89,8 @@ describe('funds/services/QE/Funds - Fund management service module', () => {
     });
     it('should throw error if deposit failed', async () => {
       let service = new QEFundService({ endpoint: 'http://1.2.-1.1' });
+      service.setAuthToken(authToken);
+
       return expect(service.deposit({ amount: 150, channel: 'bank' })).to.be.rejectedWith(Error);
     });
   });
@@ -89,11 +99,15 @@ describe('funds/services/QE/Funds - Fund management service module', () => {
       stubFetch(success(null));
 
       let service = new QEFundService({ endpoint });
+      service.setAuthToken(authToken);
+
       let response = await service.withdraw({ amount: 150, channel: 'bank', note: '' });
       expect(response).to.equal(null);
     });
     it('should throw error if withdraw failed', async () => {
       let service = new QEFundService({ endpoint: 'http://1.2.-1.1' });
+      service.setAuthToken(authToken);
+
       return expect(service.deposit({ amount: 10, channel: 'atm' })).to.be.rejectedWith(Error);
     });
   });
@@ -109,6 +123,8 @@ describe('funds/services/QE/Funds - Fund management service module', () => {
       stubFetch(success({ data: [exampleOfTransactionLog] }));
 
       let service = new QEFundService({ endpoint });
+      service.setAuthToken(authToken);
+
       let response = await service.statement();
       assert.isArray(response);
       // console.info(response);
@@ -117,6 +133,8 @@ describe('funds/services/QE/Funds - Fund management service module', () => {
     });
     it('should throw error if statement failed', async () => {
       let service = new QEFundService({ endpoint: 'http://1.2.-1.1' });
+      service.setAuthToken(authToken);
+
       return expect(service.statement()).to.be.rejectedWith(Error);
     });
   });
