@@ -9,10 +9,7 @@ import AuthStore, { AuthStoreContext } from '$features/auth/store/auth';
 import AuthService from '$features/auth/services/Auth';
 import FundsService from '$features/funds/services/QE/Funds';
 
-// import { enableLogging } from 'mobx-logger';
-
 if (process.env.NODE_ENV === 'development') {
-  // enableLogging();
   configure({
     enforceActions: 'always',
     computedRequiresReaction: true
