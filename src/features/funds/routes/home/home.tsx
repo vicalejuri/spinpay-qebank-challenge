@@ -10,7 +10,7 @@ import { useAuthStore } from '$features/auth/store/auth';
 import SvgPlaceholder from '$components/SvgPlaceholder';
 
 import Card from '$components/Card/Card';
-import { useFundsStore } from '$features/funds/store/funds';
+import { FundsStoreProvider, useFundsStore } from '$features/funds/store/funds';
 import RequireAuth from '$features/auth/hooks/RequireAuth';
 
 const SubPage = lazy(() => import('$lib/layouts/SubPage/SubPage'));
@@ -23,11 +23,11 @@ const AuthBox = observer(() => {
   /** Fetch profile/balance on first visit */
   useEffect(() => {
     (async () => {
-      if (fundsStore.balanceTimestamp === null) {
-        await fundsStore.getBalance();
-      }
       if (!profile) {
         await authStore.getProfile();
+      }
+      if (fundsStore.balanceTimestamp === null) {
+        await fundsStore.getBalance();
       }
     })();
     return () => {};

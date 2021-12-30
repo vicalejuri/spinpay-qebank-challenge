@@ -17,7 +17,8 @@ export default class QEFundService extends QEAuthService implements IFundService
   fetch(url: string, options?: RequestInit): Promise<any> {
     /** Make sure we're authenticated before proceeding */
     if (!this.isAuthenticated(this.authToken)) {
-      throw UnauthorizedError;
+      debugger;
+      throw new UnauthorizedError();
     }
     return globalFetch(url, {
       ...options,

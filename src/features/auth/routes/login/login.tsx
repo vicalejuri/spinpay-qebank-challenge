@@ -48,8 +48,8 @@ export const Login = function () {
       await auth?.login(String(card), String(answer));
       await afterLogin();
     } catch (e: unknown) {
-      const { message } = e as Error;
       console.error(e);
+      const { message } = e as Error;
       setTitle('Login inválido');
       setErrMessage(message);
     }

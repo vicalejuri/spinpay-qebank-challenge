@@ -2,7 +2,13 @@ import type { IAuthToken, IAuthService, IUserAccountHandle } from '../../types';
 
 import { fetch } from '../../../../lib/infra/fetch';
 
-export const UnauthorizedError = new Error('access denied');
+export class UnauthorizedError extends Error {
+  constructor() {
+    super('access denied');
+    this.message = 'access denied';
+    this.name = 'UnauthorizedError';
+  }
+}
 
 /**
  * A module for authentication to QEBank REST server.
@@ -68,7 +74,7 @@ export class QEAuth implements IAuthService {
     if (this.isAuthenticated(this.authToken)) {
       return await fetch(`${this.endpoint}/${this.authToken.id}/user`);
     } else {
-      return Promise.reject(UnauthorizedError);
+      return Promise.reject(new UnauthorizedError());
     }
   }
 }

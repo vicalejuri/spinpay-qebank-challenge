@@ -4,7 +4,8 @@ import { makeObservable, observable, action, computed, runInAction, autorun, rea
 import type { IFundBalanceToken, IFundService, IFundsStore, IFundStatement } from '../types';
 import { fromISOString } from '$lib/utils';
 
-import AuthStore from '$features/auth/store/auth';
+import AuthStore, { AuthStoreContext, useAuthStore } from '$features/auth/store/auth';
+import FundsService from '../services/QE/Funds';
 
 /**
  * Store API for funds management
@@ -28,7 +29,8 @@ export default class FundsStore implements IFundsStore {
     this._service = service;
 
     /**
-     * Links the reactive property `auth.authToken` to `_service.authToken`
+     * Sync's with the authentication store
+     * (if user logs off, funds store should be reset)
      */
     reaction(
       () => auth?.authToken,
@@ -72,6 +74,22 @@ export default class FundsStore implements IFundsStore {
 
 /** React context helpers */
 export const FundsStoreContext = React.createContext<FundsStore>({} as FundsStore);
+
+export const FundsStoreProvider = ({ children }: { children: React.ReactNode }) => {
+  const authStore = useAuthStore();
+  const service = new FundsService({ endpoint: String(import.meta.env.VITE_SERVICE_QEBANK_ENDPOINT) });
+
+  /**
+   * The fund service requires authentication.
+   */
+  if (authStore.authToken) {
+    service.setAuthToken(authStore.authToken);
+  }
+
+  const fundsStore = new FundsStore(authStore, service);
+
+  return <FundsStoreContext.Provider value={fundsStore}>{children}</FundsStoreContext.Provider>;
+};
 
 export function useFundsStore() {
   const context = useContext(FundsStoreContext);

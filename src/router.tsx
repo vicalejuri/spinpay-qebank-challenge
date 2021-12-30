@@ -1,3 +1,4 @@
+import { FundsStoreProvider } from '$features/funds/store/funds';
 import { lazy } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 
@@ -19,7 +20,14 @@ const Router = () => {
           <Route path="login" element={<Login />} />
           <Route path="logout" element={<Logout />} />
         </Route>
-        <Route path="/funds" element={<PancakeStackLayout first={<Header />} />}>
+        <Route
+          path="/funds"
+          element={
+            <FundsStoreProvider>
+              <PancakeStackLayout first={<Header />} />
+            </FundsStoreProvider>
+          }
+        >
           <Route index element={<FundsHome />} />
           <Route path="deposit" element={<Deposit />} />
           <Route path="withdraw" element={<Withdraw />} />

@@ -1,18 +1,19 @@
 import { Link } from 'react-router-dom';
-import styles from './Header.module.css';
+import { observer } from 'mobx-react-lite';
 
+import { cn } from '$lib/utils';
+
+import styles from './Header.module.css';
 import SvgPlaceholder from '../SvgPlaceholder';
 
-import { observer } from 'mobx-react-lite';
 import { useFundsStore } from '$features/funds/store/funds';
-import { cn } from '$lib/utils';
 import { useAuthStore } from '$features/auth/store/auth';
 
 const BalanceQuickLook = observer(() => {
   const funds = useFundsStore();
   return (
     <span>
-      {funds?.balance.toLocaleString('pt-BR', {
+      {funds?.balance?.toLocaleString('pt-BR', {
         style: 'currency',
         currency: 'BRL'
       })}
