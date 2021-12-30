@@ -82,8 +82,8 @@ describe('auth/store', () => {
       expect(store.authenticated).to.be.eql(true);
 
       await store.logout();
-      // expect(store.authToken).to.be.eql(null);
-      // expect(store.authenticated).to.be.eql(false);
+      expect(store.authToken).to.be.eql(null);
+      expect(store.authenticated).to.be.eql(false);
 
       expect(storage.getItem('authToken')).to.be.eql(null);
     });

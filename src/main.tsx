@@ -8,9 +8,6 @@ const StoreProvider = lazy(() => import('./lib/stores'));
 
 import './lib/styles/textStyles.css';
 
-// import StoreProvider from './lib/stores';
-// import RequireAuth from '$features/auth/hooks/RequireAuth';
-
 if (process.env.NODE_ENV === 'development') {
   (async function mock() {
     const { worker } = await import('./mocks/browser');

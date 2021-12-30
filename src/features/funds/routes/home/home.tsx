@@ -13,25 +13,30 @@ import Card from '$components/Card/Card';
 import { useFundsStore } from '$features/funds/store/funds';
 import RequireAuth from '$features/auth/hooks/RequireAuth';
 
-const SubPage = lazy(() => import(/* webpackChunkName: "SubPage" */ '$lib/layouts/SubPage/SubPage'));
+const SubPage = lazy(() => import('$lib/layouts/SubPage/SubPage'));
 
 const AuthBox = observer(() => {
   const authStore = useAuthStore();
   const fundsStore = useFundsStore();
   const profile = authStore?.profile;
 
-  /** Fetch profile On first render */
+  /** Fetch profile/balance on first visit */
   useEffect(() => {
     (async () => {
-      await fundsStore.getBalance();
+      if (fundsStore.balanceTimestamp === null) {
+        await fundsStore.getBalance();
+      }
+      if (!profile) {
+        await authStore.getProfile();
+      }
     })();
     return () => {};
   }, []);
 
   return (
     <span>
-      Welcome back, <br />
-      {profile?.name || ''}
+      Welcome back <br />
+      {profile?.name}
     </span>
   );
 });
@@ -45,16 +50,9 @@ const LinkCard = ({ to, title }: { to: string; title: string }) => {
 };
 
 const home = () => {
-  // const authStore = useAuthStore();
-  // const funds = useFundsStore();
-
-  // const [username, setUsername] = useState('John');
-  // console.log('home:loaded');
   return (
     <RequireAuth>
       <SubPage title={<AuthBox />} className={cn('home', 'pageWrapper')}>
-        {/* <AuthBox /> */}
-        {/* <DepositBox /> */}
         <ul className={styles.launcher}>
           <li>
             <LinkCard to="/funds/deposit" title="Depósito" />

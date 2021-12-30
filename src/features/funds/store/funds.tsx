@@ -11,7 +11,7 @@ import AuthStore from '$features/auth/store/auth';
  */
 export default class FundsStore implements IFundsStore {
   balance = 0;
-  balanceTimestamp: Date = new Date(fromISOString('1900-01-01'));
+  balanceTimestamp: Date = null;
   statement: IFundStatement = null;
 
   _service: IFundService;
@@ -72,12 +72,6 @@ export default class FundsStore implements IFundsStore {
 
 /** React context helpers */
 export const FundsStoreContext = React.createContext<FundsStore>({} as FundsStore);
-
-/** Useful for UT mocks  */
-const FundsStoreProvider = ({ children, service }: { children: React.ReactNode; service: IFundService }) => {
-  let store = new FundsStore(null, service);
-  return <FundsStoreContext.Provider value={store}>{children}</FundsStoreContext.Provider>;
-};
 
 export function useFundsStore() {
   const context = useContext(FundsStoreContext);

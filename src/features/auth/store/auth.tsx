@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { action, autorun, makeAutoObservable, makeObservable, observable, runInAction } from 'mobx';
+import { action, makeObservable, observable, runInAction } from 'mobx';
 
 import { IAuthService, IAuthToken, isAuthToken, IUserAccountHandle } from '../types';
 import StorageService from '$lib/services/KVStorage';
@@ -27,7 +27,6 @@ export default class AuthStore extends StorageService {
       // // // // // // // // //
       setAuthToken: action,
       restoreSession: action,
-      // deleteAuthTokenSession: action,
       login: action,
       logout: action,
       getProfile: action

@@ -8,7 +8,7 @@ import { cn } from '$lib/utils';
 import style from './home.module.css';
 import { useFundsStore } from '$features/funds/store/funds';
 
-const SubPage = lazy(() => import(/* webpackChunkName: "SubPage" */ '$lib/layouts/SubPage/SubPage'));
+const SubPage = lazy(() => import('$lib/layouts/SubPage/SubPage'));
 
 const Balance = observer(function Balance() {
   const funds = useFundsStore();

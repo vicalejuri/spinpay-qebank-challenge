@@ -4,12 +4,9 @@ import path from 'path';
 import viteTestPlugin from 'vite-plugin-test';
 import react from '@vitejs/plugin-react';
 
-import reactRefresh from '@vitejs/plugin-react-refresh';
-
 export default defineConfig({
   plugins: [
     react(),
-    reactRefresh(),
     viteTestPlugin({
       watch: true,
       dir: './src',

@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 import { cn } from '$lib/utils';
 
-const SubPage = lazy(() => import(/* webpackChunkName: "SubPage" */ '$lib/layouts/SubPage/SubPage'));
+const SubPage = lazy(() => import('$lib/layouts/SubPage/SubPage'));
 
 export default function withdraw() {
   return (

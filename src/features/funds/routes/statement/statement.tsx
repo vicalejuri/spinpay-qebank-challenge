@@ -5,7 +5,7 @@ import { useFundsStore } from '$features/funds/store/funds';
 import { cn } from '$lib/utils';
 import { observer } from 'mobx-react-lite';
 
-const SubPage = lazy(() => import(/* webpackChunkName: "SubPage" */ '$lib/layouts/SubPage/SubPage'));
+const SubPage = lazy(() => import('$lib/layouts/SubPage/SubPage'));
 const TransactionList = lazy(() => import('$features/funds/components/TransactionList/TransactionList'));
 import styles from './statement.module.css';
 

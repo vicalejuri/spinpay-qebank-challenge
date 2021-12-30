@@ -14,7 +14,7 @@ export interface SubPageProps {
 
 /**
  * a Sub page layout contains a title,
- * some content centered,
+ *  some content centered,
  *  optionally a back-button
  */
 export default function SubPage({ className, children, title, backButton }: SubPageProps) {
