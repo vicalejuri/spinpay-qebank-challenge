@@ -9,7 +9,7 @@
   background-color: var(--surface1, #d2d2d2);
 }
 
-.pageWrapper {
+.wrapper {
   height: inherit;
   display: flex;
   flex-direction: row;

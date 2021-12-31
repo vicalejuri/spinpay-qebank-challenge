@@ -60,7 +60,7 @@ export const Login = function () {
   }, [auth.authenticated]);
 
   return (
-    <SubPage title="" className={cn('pageWrapper', styles.login)}>
+    <SubPage title="" className={cn('wrapper', styles.login)}>
       <Card className={cn(styles.pageContainer)} title={title}>
         <>
           {errMessage && <div className="error">{errMessage}</div>}

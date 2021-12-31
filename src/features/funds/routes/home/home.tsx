@@ -10,8 +10,8 @@ import { useAuthStore } from '$features/auth/store/auth';
 import SvgPlaceholder from '$components/SvgPlaceholder';
 
 import Card from '$components/Card/Card';
-import { FundsStoreProvider, useFundsStore } from '$features/funds/store/funds';
-import RequireAuth from '$features/auth/hooks/RequireAuth';
+
+import { useFundsStore } from '$features/funds/store/funds';
 
 const SubPage = lazy(() => import('$lib/layouts/SubPage/SubPage'));
 
@@ -51,21 +51,19 @@ const LinkCard = ({ to, title }: { to: string; title: string }) => {
 
 const home = () => {
   return (
-    <RequireAuth>
-      <SubPage title={<AuthBox />} className={cn('home', 'pageWrapper')}>
-        <ul className={styles.launcher}>
-          <li>
-            <LinkCard to="/funds/deposit" title="Depósito" />
-          </li>
-          <li>
-            <LinkCard to="/funds/withdraw" title="Withdraw" />
-          </li>
-          <li>
-            <LinkCard to="/funds/statement" title="Statement" />
-          </li>
-        </ul>
-      </SubPage>
-    </RequireAuth>
+    <SubPage title={<AuthBox />} className={cn('home', 'wrapper')}>
+      <ul className={styles.launcher}>
+        <li>
+          <LinkCard to="/funds/deposit" title="Depósito" />
+        </li>
+        <li>
+          <LinkCard to="/funds/withdraw" title="Withdraw" />
+        </li>
+        <li>
+          <LinkCard to="/funds/statement" title="Statement" />
+        </li>
+      </ul>
+    </SubPage>
   );
 };
 

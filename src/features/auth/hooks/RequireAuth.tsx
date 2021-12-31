@@ -1,9 +1,9 @@
-import { useAuthStore } from '$features/auth/store/auth';
-// import { Navigate } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import { trace } from 'mobx';
-import { observer } from 'mobx-react-lite';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { observer } from 'mobx-react-lite';
+
+import { useAuthStore } from '$features/auth/store/auth';
 
 /**
  * Hook for constraining a Route to only authenticated users

@@ -33,7 +33,7 @@ export const Statement = function Statement() {
   }, []);
 
   return (
-    <SubPage title={'Statement'} className={cn('statement', 'pageWrapper')} backButton>
+    <SubPage title={'Statement'} className={cn('statement', 'wrapper')} backButton>
       <div className={cn(styles.scroll)}>
         <TransactionList
           title={

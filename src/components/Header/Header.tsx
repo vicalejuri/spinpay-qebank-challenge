@@ -32,7 +32,7 @@ const UserQuickLook = observer(() => {
 const Header = () => {
   return (
     <header className={styles.header}>
-      <div className={cn('pageWrapper', styles.pageWrapper)}>
+      <div className={cn('wrapper', styles.wrapper)}>
         <Link to="/" className={styles.logo}>
           <img src={SvgPlaceholder({ width: 100, height: 104 })} />
         </Link>

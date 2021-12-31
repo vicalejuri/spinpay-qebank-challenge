@@ -1,0 +1,11 @@
+{
+  "postcss": {
+    "parser": "sugarss",
+    "map": true,
+    "plugins": {
+      "postcss-plugin": {
+        "postcss-preset-env": true
+      }
+    }
+  }
+}

@@ -5,7 +5,7 @@ const SubPage = lazy(() => import('$lib/layouts/SubPage/SubPage'));
 
 export default function withdraw() {
   return (
-    <SubPage className={cn('withdraw', 'pageWrapper')} title={'Withdraw'} backButton>
+    <SubPage className={cn('withdraw', 'wrapper')} title={'Withdraw'} backButton>
       <div>Withdraw</div>
     </SubPage>
   );

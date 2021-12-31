@@ -49,7 +49,7 @@ const DepositButton = observer(function DepositButton() {
 
 const DepositBox = () => {
   return (
-    <SubPage title={'Deposit'} className={cn('deposit', 'pageWrapper')} backButton>
+    <SubPage title={'Deposit'} className={cn('deposit', 'wrapper')} backButton>
       <Balance />
       <DepositButton />
     </SubPage>

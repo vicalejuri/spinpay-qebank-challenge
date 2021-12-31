@@ -1,12 +1,11 @@
-import React, { createContext, lazy, Suspense } from 'react';
+import React, { lazy, Suspense } from 'react';
 import ReactDOM from 'react-dom';
-
+import { BrowserRouter } from 'react-router-dom';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import Router from './router';
-const StoreProvider = lazy(() => import('./lib/stores'));
 
-import './lib/styles/textStyles.css';
+const StoreProvider = lazy(() => import('./lib/stores'));
 
 if (process.env.NODE_ENV === 'development') {
   (async function mock() {
@@ -22,7 +21,9 @@ ReactDOM.render(
     <Suspense fallback={<div>Loading...</div>}>
       <ErrorBoundary FallbackComponent={({ error }) => <pre>Something went wrong: {error.message}</pre>}>
         <StoreProvider>
-          <Router />
+          <BrowserRouter>
+            <Router />
+          </BrowserRouter>
         </StoreProvider>
       </ErrorBoundary>
     </Suspense>
