@@ -40,7 +40,7 @@ const DepositButton = observer(function DepositButton() {
   return (
     <>
       {errorMessage}
-      <button onClick={deposit} disabled={loading}>
+      <button onPointerDown={deposit} disabled={loading}>
         Deposit (+100 {loading && 'Loading'})
       </button>
     </>

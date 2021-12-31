@@ -1,35 +1,12 @@
-/* @import 'open-props/postcss/style';
-@import 'open-props/postcss/normalize'; */
+@import 'open-props/postcss/style';
 
 @import '$lib/styles/reset';
-@import '$lib/styles/typography';
-
-@use postcss-preset-env {
-  stage: 0;
-  features: {
-    "logical-properties-and-values":false ;
-  }
-}
+@import '$lib/styles/typography/typography.scss';
+@import '$lib/styles/colors';
 
 body {
   background-image: url('/beams.jpg');
   background-size: cover;
-}
-
-/** Disable the default margins from headings */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin-block-start: 0;
-  margin-block-end: 0;
-}
-
-a:-webkit-any-link {
-  color: inherit;
-  text-decoration: none;
 }
 
 .wrapper {

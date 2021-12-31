@@ -64,7 +64,7 @@ export const Login = function () {
       <Card className={cn(styles.pageContainer)} title={title}>
         <>
           {errMessage && <div className="error">{errMessage}</div>}
-          <button className={cn(styles.loginBtn)} onClick={login}>
+          <button className={cn(styles.loginBtn)} onPointerDown={login}>
             {errMessage ? 'Tentar novamente' : 'Continuar'}
           </button>
         </>

@@ -1,11 +1,9 @@
 {
-  "postcss": {
-    "parser": "sugarss",
-    "map": true,
-    "plugins": {
-      "postcss-plugin": {
-        "postcss-preset-env": true
-      }
+  "parser": "postcss-scss",
+  "map": true,
+  "plugins": {
+    "postcss-preset-env": {
+      "stage": 0
     }
   }
 }

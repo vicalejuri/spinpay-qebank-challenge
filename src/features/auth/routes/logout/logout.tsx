@@ -14,7 +14,7 @@ export default observer(function Logout() {
 
   return (
     <section className="logout">
-      <button onClick={() => navigate('/')}>Voltar</button>
+      <button onPointerDown={() => navigate('/')}>Voltar</button>
     </section>
   );
 });

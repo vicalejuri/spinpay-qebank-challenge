@@ -21,7 +21,7 @@ export default function SubPage({ className, children, title, backButton }: SubP
   return (
     <article className={cn(styles.subpage, className)}>
       {backButton && <BackButton className={styles.backButton} />}
-      <h1 className={cn('headline2', styles.title)}>{title}</h1>
+      <h1 className={cn('headline', styles.title)}>{title}</h1>
       {children}
     </article>
   );

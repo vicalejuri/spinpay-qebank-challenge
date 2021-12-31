@@ -3184,6 +3184,11 @@ postcss-replace-overflow-wrap@^4.0.0:
   resolved "https://registry.yarnpkg.com/postcss-replace-overflow-wrap/-/postcss-replace-overflow-wrap-4.0.0.tgz#d2df6bed10b477bf9c52fab28c568b4b29ca4319"
   integrity sha512-KmF7SBPphT4gPPcKZc7aDkweHiKEEO8cla/GjcBK+ckKxiZslIu3C4GCRW3DNfL0o7yW7kMQu9xlZ1kXRXLXtw==
 
+postcss-scss@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/postcss-scss/-/postcss-scss-4.0.2.tgz#39ddcc0ab32f155d5ab328ee91353d67a52d537b"
+  integrity sha512-xfdkU128CkKKKVAwkyt0M8OdnelJ3MRcIRAPPQkRpoPeuzWY3RIeg7piRCpZ79MK7Q16diLXMMAD9dN5mauPlQ==
+
 postcss-selector-not@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/postcss-selector-not/-/postcss-selector-not-5.0.0.tgz#ac5fc506f7565dd872f82f5314c0f81a05630dc7"

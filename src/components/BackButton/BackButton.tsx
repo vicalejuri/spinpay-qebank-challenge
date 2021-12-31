@@ -12,7 +12,7 @@ export default function BackButton({ className }: { className: string | string[]
   }
 
   return (
-    <a href="" onClick={handleClick} className={cn(className)}>
+    <a href="" onPointerDown={handleClick} className={cn(className)}>
       <ArrowLeftIcon />
     </a>
   );

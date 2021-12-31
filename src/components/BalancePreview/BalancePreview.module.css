@@ -1,0 +1,37 @@
+.balancePreview {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  flex: 1 1 100%;
+  color: var(--text2);
+
+  font-size: var(--font-size-0);
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.balanceButton {
+  all: unset;
+
+  flex: 1 1 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  cursor: pointer;
+  color: var(--text1);
+
+  &[data-visible='false'] .balance {
+    color: transparent;
+    background-color: var(--surface4);
+    border-radius: var(--radius-2);
+  }
+}
+
+.balance {
+  /** Avoid layout shift caused by non-monospaced fonts */
+  font-family: var(--font-mono);
+  font-size: var(--font-size-1);
+}

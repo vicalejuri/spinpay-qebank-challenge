@@ -15,6 +15,7 @@
 
 /** A single label, so the label occupy the whole card */
 .cardLabel {
+  font-size: var(--font-size-fluid-2);
   color: var(--primary);
 }
 

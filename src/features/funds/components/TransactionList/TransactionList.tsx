@@ -10,13 +10,13 @@ export const TransactionListItem = (props: IFundTransaction) => {
     <li className={cn(styles.listItem)} data-variant={operation}>
       <div className={cn('icon', styles.icon)}>{props.timestamp}</div>
       <div className={cn('description', styles.description)}>
-        <div className="note body1">{props.note}</div>
+        <div className="note">{props.note}</div>
         <div className="timestampChannel caption1">
           {props.timestamp}
           {props.channel}
         </div>
       </div>
-      <div className={cn(styles.amount, 'body1')}>
+      <div className={cn(styles.amount)}>
         {props.amount.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL'

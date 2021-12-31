@@ -22,7 +22,7 @@ export default function Card({
   return (
     <div className={cn(styles.card, className)}>
       {typeof img === 'string' ? <img className={styles.cardMedia} src={img} alt={String(title)} /> : img}
-      {typeof title === 'string' ? <h2 className={cn('headline5', styles.cardLabel)}>{title}</h2> : title}
+      {typeof title === 'string' ? <h2 className={cn(styles.cardLabel)}>{title}</h2> : title}
       {children}
     </div>
   );
