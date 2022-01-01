@@ -1,4 +1,4 @@
-import { useEffect, useState, lazy } from 'react';
+import { useEffect, useState, lazy, ReactElement } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
 
@@ -36,15 +36,18 @@ const AuthBox = observer(() => {
   return (
     <span>
       Welcome back <br />
-      {profile?.name}
+      {profile?.name
+        .split(' ')
+        .map((s) => s[0].toUpperCase() + s.slice(1))
+        .join(' ')}
     </span>
   );
 });
 
-const LinkCard = ({ to, title }: { to: string; title: string }) => {
+const LinkCard = ({ to, title, img }: { to: string; title: string; img: string | ReactElement }) => {
   return (
-    <Link to={to}>
-      <Card title={title} img={SvgPlaceholder({ width: 100, height: 100 })} />
+    <Link to={to} className={styles.launcherButton}>
+      <Card className={styles.launcherCard} title={title} img={img} />
     </Link>
   );
 };
@@ -54,13 +57,13 @@ const home = () => {
     <SubPage title={<AuthBox />} className={cn('home', 'wrapper')}>
       <ul className={styles.launcher}>
         <li>
-          <LinkCard to="/funds/deposit" title="Depósito" />
+          <LinkCard to="/funds/deposit" title="Deposit" img={<img src="/icons/deposit2.svg" alt="Deposit" />} />
         </li>
         <li>
-          <LinkCard to="/funds/withdraw" title="Withdraw" />
+          <LinkCard to="/funds/withdraw" title="Withdraw" img={<img src="/icons/withdraw2.svg" alt="Withdraw" />} />
         </li>
         <li>
-          <LinkCard to="/funds/statement" title="Statement" />
+          <LinkCard to="/funds/statement" title="Statement" img={<img src="/icons/statement2.svg" alt="Statement" />} />
         </li>
       </ul>
     </SubPage>
