@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { makeObservable, observable, action, computed, runInAction, autorun, reaction } from 'mobx';
+import { makeObservable, observable, action, runInAction, reaction } from 'mobx';
 
 import type { IFundBalanceToken, IFundService, IFundsStore, IFundStatement } from '../types';
 import { fromISOString } from '$lib/utils';

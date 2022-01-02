@@ -2,7 +2,6 @@ import { autorun, when } from 'mobx';
 
 export default class KVStorageService {
   public _storage: Storage;
-  // _cache: Map<string, unknown> = new Map();
 
   /**
    * Read/write values to some Persistent storage.
@@ -33,32 +32,9 @@ export default class KVStorageService {
         return this[property];
       },
       () => {
-        // console.log('when => ', v);
         this.writeProperty(property, this[property]);
       }
     );
-    // console.log(`this.${property} = ${nowValue}`);
-    // let lastValue = this._cache.get(property);
-    // console.log(`autorun(from ${lastValue} -> ${nowValue})`);
-    // if (nowValue !== lastValue) {
-    // this.write(property, nowValue);
-    // }
-    // });
-
-    //  when is not working
-    // when(
-    //   () => {
-    //     // Everytime 'a' property change, this is called
-    //     let nowValue = this[property];
-    //     let lastValue = this._cache[property] || undefined;
-    //     console.log(`observeChange(from ${lastValue} -> ${nowValue}`);
-    //     return nowValue !== lastValue;
-    //   },
-    //   () => {
-    //     console.log("***changed***");
-    //     this.write(property, this[property]);
-    //   }
-    // );
   }
 
   /**
@@ -78,7 +54,6 @@ export default class KVStorageService {
    * @param {unknown} value
    */
   writeProperty(property, value) {
-    // this._cache.set(property, value);
     const serialized = JSON.stringify(value);
     this._storage.setItem(property, serialized);
   }
