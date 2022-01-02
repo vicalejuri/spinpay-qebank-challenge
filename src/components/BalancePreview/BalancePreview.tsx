@@ -1,11 +1,12 @@
+import { useCallback, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { useFundsStore } from '$features/funds/store/funds';
 
 import { cn, toCurrencyFormat } from '$lib/utils';
-import styles from './BalancePreview.module.css';
 
+import { useFundsStore } from '$features/funds/store/funds';
 import { EyeOpenIcon, EyeNoneIcon } from '@radix-ui/react-icons';
-import { useCallback, useState } from 'react';
+
+import styles from './BalancePreview.module.css';
 
 /**
  * Show balance preview.

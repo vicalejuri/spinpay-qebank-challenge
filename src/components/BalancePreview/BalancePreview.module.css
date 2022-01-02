@@ -21,17 +21,23 @@
   gap: 1rem;
 
   cursor: pointer;
-  color: var(--text1);
+  color: var(--text2);
+
+  & .balance {
+    /** Avoid layout shift caused by non-monospaced fonts */
+    font-family: var(--font-mono);
+    font-size: var(--font-size-fluid-1);
+
+    color: var(--surface1);
+    // stroke
+    text-shadow: -1px -1px 0 var(--text1), 1px -1px 0 var(--text1), -1px 1px 0 var(--text1), 1px 1px 0 var(--text1);
+  }
 
   &[data-visible='false'] .balance {
     color: transparent;
+    text-shadow: none;
+
     background-color: var(--surface4);
     border-radius: var(--radius-2);
   }
-}
-
-.balance {
-  /** Avoid layout shift caused by non-monospaced fonts */
-  font-family: var(--font-mono);
-  font-size: var(--font-size-1);
 }
