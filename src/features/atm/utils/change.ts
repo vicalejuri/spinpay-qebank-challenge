@@ -1,3 +1,5 @@
+import { SingleCoinBag } from '../types';
+
 // Change Tolerance, stop algorithm when remainder of change is lower  (for BRL/USD it's 1 cent)
 const EPSILON = 10 ** -2;
 
@@ -19,16 +21,16 @@ const roundFloat = (x) => Number(x.toFixed(2));
  * return a set of coins, that when summed equals to `amount`.
  *
  * Tries the smallest possible quantity of coins, starting
- * with the biggest coins available and decreasing each step.
+ * with the biggest coins available and decreasing each recursion.
  *
  * It also assumes that there's a 1 coin unit, so that
  * every integer number can be expressed as a sum of +1 coin.
  *
  * @param {number[]} availableCoins
- * @param {Number} amount
+ * @param {number} amount
  * @param {agg=[]} agg
  */
-export const change = (availableCoins, _amount, agg = []) => {
+export const change = (availableCoins, _amount, agg = []): SingleCoinBag[] => {
   const [coin, ...nextCoins] = availableCoins;
 
   // No more coins to process, return the bag

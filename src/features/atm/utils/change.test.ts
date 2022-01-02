@@ -5,8 +5,8 @@ import '$tests/setup/index';
 import { change } from './change';
 
 const coins = [
-  // { value: 50, length: 10 },
-  // { value: 20, length: 10 },
+  { value: 50, length: 10 },
+  { value: 20, length: 10 },
   { value: 10, length: 1 },
   { value: 5, length: 1 },
   // { value: 3, length: 1 },
@@ -22,8 +22,8 @@ const coinsValueCache = coins.map((c) => c.value);
 
 const sumChange = (arr) => arr.reduce((prev, curr) => curr[0] * curr[1] + prev, 0);
 
-describe('atm/utils/change(number) - with bills 1,2,5,10', () => {
-  it('Should return a single bill when it can', () => {
+describe('atm/utils/change(number) - with Notes 1,2,5,10', () => {
+  it('Should return a single Note when it can', () => {
     // Try to get the change for(1,2,5,10, etc)
     for (let i = 0; i < coinsValueCache.length; i++) {
       const coinValue = coinsValueCache[i];
@@ -32,7 +32,7 @@ describe('atm/utils/change(number) - with bills 1,2,5,10', () => {
       expect(changeResult).eql([[coinValue, 1]]);
     }
   });
-  it('Should return multiple bills for compound values', () => {
+  it('Should return multiple Notes for compound values', () => {
     const changeResult = change(coinsValueCache, 19);
     expect(changeResult).eql([
       [10, 1],
