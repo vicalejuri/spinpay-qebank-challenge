@@ -3,7 +3,7 @@
 @import '$lib/styles/reset';
 @import '$lib/styles/typography/typography.scss';
 @import '$lib/styles/colors';
-
+@import '$lib/styles/buttons';
 body {
   background-image: url('/beams.jpg');
   background-size: cover;

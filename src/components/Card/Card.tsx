@@ -1,4 +1,4 @@
-import { ReactElement, cloneElement } from 'react';
+import { ReactElement, cloneElement, isValidElement } from 'react';
 import { cn } from '$lib/utils';
 import styles from './Card.module.css';
 
@@ -18,15 +18,16 @@ export default function Card({
 }: {
   title?: string | ReactElement;
   className?: string | string[];
-  img?: string | ReactElement;
+  img?: string | ReactElement<{ className: string | string[] }>;
   children?: ReactElement;
 }) {
   const ImgElement =
     typeof img === 'string' ? (
       <img className={styles.cardMedia} src={img} alt={String(title)} />
-    ) : (
-      cloneElement(img, { className: cn(styles.cardMedia, img.props.className) })
-    );
+    ) : isValidElement(img) ? (
+      cloneElement(img, { className: cn(styles.cardMedia, img.props?.className) })
+    ) : undefined;
+
   return (
     <div className={cn(styles.card, className)}>
       {ImgElement}

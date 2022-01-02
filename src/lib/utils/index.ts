@@ -43,3 +43,11 @@ export function toReadableDateString(date: UnixTimestamp | Date): string {
       return date.toLocaleDateString('en-US', options);
   }
 }
+
+/* format `value` as a currency  */
+export function toCurrencyFormat(value: number, countryCode = 'pt-BR', currency = 'BRL') {
+  return value.toLocaleString(countryCode, {
+    style: 'currency',
+    currency
+  });
+}

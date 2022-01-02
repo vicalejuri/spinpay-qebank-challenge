@@ -1,9 +1,3 @@
-.title {
-  /** Remove the default margin-top of <h1> */
-  margin: 0;
-  padding: 0;
-}
-
 .launcher {
   margin: 0;
   padding: 0;
@@ -12,6 +6,10 @@
   gap: 1em;
 
   list-style: none;
+
+  @media (--sm-n-below) {
+    flex-direction: column;
+  }
 }
 
 .launcher > li {
@@ -21,7 +19,8 @@
 .launcherButton {
   display: block;
   border-radius: var(--radius-2);
-  box-shadow: var(--shadow-2);
+  overflow: hidden;
+  border: 4px solid var(--surface4);
 }
 
 /**

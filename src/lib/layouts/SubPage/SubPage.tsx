@@ -20,8 +20,10 @@ export interface SubPageProps {
 export default function SubPage({ className, children, title, backButton }: SubPageProps) {
   return (
     <article className={cn(styles.subpage, className)}>
-      {backButton && <BackButton className={styles.backButton} />}
-      <h1 className={cn('headline', styles.title)}>{title}</h1>
+      <h1 className={cn('headline', styles.title)}>
+        {backButton && <BackButton className={styles.backButton} />}
+        {title}
+      </h1>
       {children}
     </article>
   );

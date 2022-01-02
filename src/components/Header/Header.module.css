@@ -7,7 +7,7 @@
 
   background-color: var(--surface2, #d2d2d2);
   color: var(--text2, #333);
-  box-shadow: var(--shadow-1);
+  box-shadow: var(--inner-shadow-0);
 }
 
 .wrapper {

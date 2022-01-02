@@ -10,7 +10,7 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <div className={cn('wrapper', styles.wrapper)}>
-        <Link to="/" className={styles.logo}>
+        <Link to="/funds/" className={styles.logo}>
           <img src="/coin.svg" loading="eager" height="48px" alt="ATM logo" />
         </Link>
         <div className={styles.right}>

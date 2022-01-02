@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { useFundsStore } from '$features/funds/store/funds';
 
-import { cn } from '$lib/utils';
+import { cn, toCurrencyFormat } from '$lib/utils';
 import styles from './BalancePreview.module.css';
 
 import { EyeOpenIcon, EyeNoneIcon } from '@radix-ui/react-icons';
@@ -17,10 +17,7 @@ export const BalancePreview = observer(() => {
   const [visible, setVisible] = useState(true);
   const toggleVisible = useCallback(() => setVisible(!visible), [visible]);
 
-  const balanceValue = funds?.balance?.toLocaleString('pt-BR', {
-    style: 'currency',
-    currency: 'BRL'
-  });
+  const balanceValue = toCurrencyFormat(funds?.balance || 0);
 
   return (
     <div className={cn(styles.balancePreview)}>

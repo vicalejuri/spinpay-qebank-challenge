@@ -1,0 +1,66 @@
+:root {
+  --input-pad: 0.5rem;
+  --input-border: 4px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.label {
+  user-select: none;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+
+  background-color: red;
+
+  /** Use box-shadow instead of border, to avoid layout shifting */
+  box-shadow: 0 0 0 calc(var(--input-border) / 2) var(--gray-3);
+  border-radius: var(--radius-1);
+
+  &:focus-within {
+    box-shadow: 0 0 0 var(--input-border) var(--gray-4);
+  }
+}
+
+.inputElement {
+  all: unset;
+  display: inline-flex;
+
+  min-width: 200px;
+  /* width: calc(100% - (var(--input-pad) * 2) - var(--input-border) * 2); */
+  width: calc(100% - var(--input-border) * 2);
+  /* width: 100%; */
+  min-height: inherit;
+  padding: 0 var(--input-pad);
+
+  background-color: var(--surface1);
+  font-size: var(--font-size-fluid-0);
+}
+
+.errorMessage {
+  padding: 0.5em 1em;
+  width: fit-content;
+
+  font-size: var(--font-size-fluid-0);
+
+  border-radius: var(--radius-2);
+  background-color: var(--surface1);
+  box-shadow: var(--shadow-4);
+}
+
+/**
+ * States and variants
+ */
+.inputWrapper[data-invalid='true'],
+.inputElement:invalid {
+  box-shadow: 0 0 0 var(--input-border) var(--red-3);
+  position: relative;
+}

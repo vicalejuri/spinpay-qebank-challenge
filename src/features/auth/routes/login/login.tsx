@@ -9,7 +9,6 @@ import Card from '$components/Card/Card';
 import styles from './login.module.css';
 
 import { useAuthStore } from '$features/auth/store/auth';
-import { ErrorBoundary } from 'react-error-boundary';
 
 /** After successful login, redirect browser to this route */
 const targetRoute = '/funds';
@@ -61,14 +60,15 @@ export const Login = function () {
 
   return (
     <SubPage title="" className={cn('wrapper', styles.login)}>
-      <Card className={cn(styles.pageContainer)} title={title}>
+      <div className={cn(styles.pageContainer)} title={title}>
+        <h1>{title}</h1>
         <>
           {errMessage && <div className="error">{errMessage}</div>}
-          <button className={cn(styles.loginBtn)} onPointerDown={login}>
+          <button className={cn('button', 'filled', 'invert')} onPointerDown={login}>
             {errMessage ? 'Tentar novamente' : 'Continuar'}
           </button>
         </>
-      </Card>
+      </div>
     </SubPage>
   );
 };

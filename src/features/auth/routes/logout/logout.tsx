@@ -10,11 +10,8 @@ export default observer(function Logout() {
 
   useEffect(() => {
     authStore?.logout();
+    navigate('/');
   }, []);
 
-  return (
-    <section className="logout">
-      <button onPointerDown={() => navigate('/')}>Voltar</button>
-    </section>
-  );
+  return <section className="logout"></section>;
 });

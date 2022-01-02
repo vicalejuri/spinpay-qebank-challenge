@@ -3,8 +3,7 @@
   min-height: 100px;
   overflow: hidden;
 
-  border-radius: var(--radius-2);
-  background-color: var(--surface3);
+  background-color: var(--surface1);
 
   position: relative;
   display: flex;
@@ -37,7 +36,7 @@
   justify-content: center;
   text-align: center;
 
-  background-color: var(--surface4);
+  background-color: var(--surface3);
 }
 
 .cardMedia {

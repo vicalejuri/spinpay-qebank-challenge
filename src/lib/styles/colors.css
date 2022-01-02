@@ -4,6 +4,7 @@ html {
 
   --text1-light: var(--gray-8);
   --text2-light: var(--gray-6);
+  --textInvert-light: var(--gray-1);
 
   --link-light: var(--indigo-7);
   --link-visited-light: var(--grape-7);
@@ -12,15 +13,17 @@ html {
   --surface2-light: var(--gray-1);
   --surface3-light: var(--gray-2);
   --surface4-light: var(--gray-3);
+  --surfaceInvert-light: var(--gray-9);
 
   --surface-shadow-light: 200 10% 20%;
-  --shadow-strength-light: 15%;
+  --shadow-strength-light: 5%;
 
   /** Dark */
   --brand-dark: var(--orange-3);
 
   --text1-dark: var(--gray-1);
   --text2-dark: var(--gray-3);
+  --textInvert-dark: var(--gray-9);
 
   --link-dark: var(--indigo-3);
   --link-visited-dark: var(--grape-3);
@@ -29,6 +32,8 @@ html {
   --surface2-dark: var(--gray-8);
   --surface3-dark: var(--gray-7);
   --surface4-dark: var(--gray-6);
+  --surfaceInvert-dark: var(--gray-1);
+
   --surface-shadow-dark: 200 50% 3%;
   --shadow-strength-dark: 8%;
 }
@@ -38,6 +43,7 @@ html {
 
   --text1: var(--text1-light);
   --text2: var(--text2-light);
+  --textInvert: var(--textInvert-light);
 
   --link: var(--link-light);
   --link-visited: var(--link-visited-light);
@@ -46,6 +52,8 @@ html {
   --surface2: var(--surface2-light);
   --surface3: var(--surface3-light);
   --surface4: var(--surface4-light);
+
+  --surfaceInvert: var(--surfaceInvert-light);
 
   --surface-shadow: var(--surface-shadow-light);
   --shadow-strength: var(--shadow-strength-light);
@@ -57,6 +65,7 @@ html {
 
     --text1: var(--text1-dark);
     --text2: var(--text2-dark);
+    --textInvert: var(--textInvert-dark);
 
     --link: var(--link-dark);
     --link-visited: var(--link-visited-dark);
@@ -65,6 +74,7 @@ html {
     --surface2: var(--surface2-dark);
     --surface3: var(--surface3-dark);
     --surface4: var(--surface4-dark);
+    --surfaceInvert: var(--surfaceInvert-dark);
 
     --surface-shadow: var(--surface-shadow-dark);
     --shadow-strength: var(--shadow-strength-dark);
