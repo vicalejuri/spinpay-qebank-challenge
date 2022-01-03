@@ -105,7 +105,7 @@ export const ChangeBox = ({
       console.log('ATM suggested change:', suggestedChange);
       setPreferredCoinsOrNotes(mergeAtmCoins(preferredCoinsOrNotes, suggestedChange));
     }
-  }, [amount, remainder]);
+  }, [amount]);
 
   return (
     <div className={styles.wrapper} data-disabled={disabled}>
@@ -122,11 +122,13 @@ export const ChangeBox = ({
           <SingleCoin note={coin} key={coin.value} onIncrease={increaseCoin} onDecrease={decreaseCoin} />
         ))}
       </div>
+      {/*
       <hr />
       <div className={styles.changeTotal}>
         <h3 className="caption">Total Value:</h3>
         <div>{toCurrencyFormat(sumAtmCoins(preferredCoinsOrNotes))} </div>
       </div>
+      */}
     </div>
   );
 };

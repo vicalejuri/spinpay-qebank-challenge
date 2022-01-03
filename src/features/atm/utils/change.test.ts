@@ -19,7 +19,7 @@ const coins = [
   { value: 0.01, length: 1 }
 ];
 
-describe.only('atm/utils/change(number) - with Notes 1,2,5,10', () => {
+describe('atm/utils/change(number) - with Notes 1,2,5,10', () => {
   it('Should return a single Note when it can', () => {
     // Try to get the change for(1,2,5,10, etc)
     for (let i = 0; i < coins.length; i++) {

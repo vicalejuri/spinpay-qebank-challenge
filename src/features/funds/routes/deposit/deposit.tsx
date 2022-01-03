@@ -122,7 +122,6 @@ const DepositBox = function DepositButton({
 
 const DepositPage = observer(() => {
   const funds = useFundsStore();
-  const auth = useAuthStore();
 
   /** 1. What screen should render? */
   const [activeScreen, setActiveScreen] = useState<DepositScreenType>('form');
@@ -150,8 +149,7 @@ const DepositPage = observer(() => {
       setActiveAmount(amount);
       setLoading(true);
       try {
-        // todo: add description
-        const r = await funds.deposit(amount);
+        const r = await funds.deposit(amount, description);
         setActiveScreen('success');
         setActiveTitle('Operation completed');
       } catch (e: any) {

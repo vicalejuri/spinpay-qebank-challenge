@@ -7,6 +7,12 @@ export const range = (n: number) => {
   return Array.from({ length: n }).map((_, i) => i);
 };
 
+export const randId = () => {
+  return range(8)
+    .map(() => Math.floor(Math.random() * 10))
+    .join('');
+};
+
 /**
  * Read a ISO string
  */

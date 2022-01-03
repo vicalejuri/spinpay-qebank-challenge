@@ -4,10 +4,12 @@ export interface IFundsStore {
   balance: number;
   _service: IFundService;
 
-  deposit(amount: number): Promise<void>;
-  withdraw(amount: number): Promise<void>;
+  deposit(amount: number, note: string): Promise<IFundTransaction>;
+  withdraw(amount: number): Promise<IFundTransaction>;
   getBalance(): Promise<IFundBalanceToken>;
   getStatement(): Promise<IFundStatement>;
+
+  addToLocalStatement(transaction: IFundTransaction): void;
 }
 
 export interface IFundBalanceToken {

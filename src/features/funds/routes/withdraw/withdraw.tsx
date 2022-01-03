@@ -14,12 +14,17 @@ import ChangeBox from '../../components/ChangeBox/ChangeBox';
 
 import styles from './withdraw.module.css';
 import { AtmCoin } from '$features/atm/types';
+import { sumAtmCoins } from '$features/atm/utils';
 
 type WithdrawScreenType = 'form' | 'success' | 'error';
 
 const WithdrawError = ({ message }: { message: string }) => {
   // todo: Improve error layout, add retry button
-  return <div className={styles.depositError}>error: {message}</div>;
+  return (
+    <div className={styles.withdrawError}>
+      <pre className="error">{message}</pre>
+    </div>
+  );
 };
 
 const WithdrawSuccess = ({ amount, balance }: { amount: number; balance: number }) => {
@@ -87,8 +92,9 @@ const WithdrawBox = ({
     async (ev: FormEvent<HTMLFormElement>) => {
       ev.preventDefault();
 
+      const totalValue = sumAtmCoins(preferredCoinsOrNotes);
       if (amountError === '') {
-        onSubmit(amount, preferredCoinsOrNotes);
+        onSubmit(totalValue, preferredCoinsOrNotes);
       }
     },
     [form, amount, amountError, preferredCoinsOrNotes]
@@ -124,7 +130,7 @@ const WithdrawBox = ({
           type="submit"
           className={cn('button', 'filled', 'invert', styles.submitBtn)}
           disabled={disableSubmit || amountError !== ''}
-          value="Confirm"
+          value={`Confirm withdraw of ${toCurrencyFormat(sumAtmCoins(preferredCoinsOrNotes))}`}
         />
       </div>
     </form>

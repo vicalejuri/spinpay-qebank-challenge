@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { makeObservable, observable, action, runInAction, reaction } from 'mobx';
 
-import type { IFundBalanceToken, IFundService, IFundsStore, IFundStatement } from '../types';
-import { fromISOString } from '$lib/utils';
+import type { IFundBalanceToken, IFundService, IFundsStore, IFundStatement, IFundTransaction } from '../types';
+import { fromISOString, randId, range, toUnixTimestamp } from '$lib/utils';
 
 import AuthStore, { AuthStoreContext, useAuthStore } from '$features/auth/store/auth';
 import FundsService from '../services/QE/Funds';
@@ -52,23 +52,53 @@ export default class FundsStore implements IFundsStore {
   async getStatement(): Promise<IFundStatement> {
     const statement = await this._service.statement();
     runInAction(() => {
-      this.statement = statement;
+      // Join local + remote statements, and order by timestamp (desc)
+      this.statement = [...statement, ...(this.statement || [])].sort((a, b) => {
+        return fromISOString(b.timestamp) - fromISOString(a.timestamp);
+      });
     });
-    return statement;
+    return this.statement;
   }
 
-  async deposit(amount: number) {
+  addToLocalStatement(transaction: IFundTransaction): void {
+    if (this.statement === null) {
+      runInAction(() => {
+        this.statement = [];
+      });
+    }
+    runInAction(() => {
+      this.statement.push(transaction);
+    });
+  }
+
+  async deposit(amount: number, note: string) {
     const depositResponse = await this._service.deposit({ amount, channel: 'atm' });
+    const transaction: IFundTransaction = {
+      id: randId(),
+      amount,
+      note,
+      channel: 'ATM',
+      timestamp: new Date().toISOString()
+    };
     runInAction(() => {
       this.balance += amount;
-      // todo: add to statement
+      this.addToLocalStatement(transaction);
     });
+    return transaction;
   }
 
   async withdraw(amount: number) {
+    const transaction: IFundTransaction = {
+      id: randId(),
+      amount: amount * -1,
+      channel: 'ATM',
+      timestamp: new Date().toISOString()
+    };
     runInAction(() => {
       this.balance -= amount;
+      this.addToLocalStatement(transaction);
     });
+    return transaction;
   }
 }
 

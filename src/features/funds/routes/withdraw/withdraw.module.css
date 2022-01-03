@@ -78,3 +78,11 @@
     gap: 1em;
   }
 }
+
+.withdrawError {
+  & pre {
+    padding: 0.5em 2em;
+    background-color: var(--surface4);
+    border-radius: var(--radius-2);
+  }
+}
