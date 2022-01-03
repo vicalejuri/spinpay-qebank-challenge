@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 import type { RouteObject } from 'react-router-dom';
-
 import { useRoutes } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 
 import FundsRoutes from '$features/funds/routes';
 
@@ -27,7 +27,11 @@ const allRoutes: RouteObject[] = [
 
 const Router = () => {
   const routes = useRoutes(allRoutes);
-  return <>{routes}</>;
+  return (
+    <AnimatePresence exitBeforeEnter initial={false}>
+      {routes}
+    </AnimatePresence>
+  );
 };
 
 export default Router;

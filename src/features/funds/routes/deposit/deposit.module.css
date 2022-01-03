@@ -20,7 +20,7 @@
   & .amountPrefix {
     display: flex;
     align-items: center;
-    height: 100%;
+
     font-size: var(--font-size-2);
     font-weight: normal;
 

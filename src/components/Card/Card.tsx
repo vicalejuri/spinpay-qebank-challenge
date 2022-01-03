@@ -23,15 +23,15 @@ export default function Card({
 }) {
   const ImgElement =
     typeof img === 'string' ? (
-      <img className={styles.cardMedia} src={img} alt={String(title)} />
+      <img className={cn('cardMedia', styles.cardMedia)} src={img} alt={String(title)} />
     ) : isValidElement(img) ? (
-      cloneElement(img, { className: cn(styles.cardMedia, img.props?.className) })
+      cloneElement(img, { className: cn('cardMedia', styles.cardMedia, img.props?.className) })
     ) : undefined;
 
   return (
     <div className={cn(styles.card, className)}>
       {ImgElement}
-      {typeof title === 'string' ? <h2 className={cn(styles.cardLabel)}>{title}</h2> : title}
+      {typeof title === 'string' ? <h2 className={cn('cardLabel', styles.cardLabel)}>{title}</h2> : title}
       {children}
     </div>
   );

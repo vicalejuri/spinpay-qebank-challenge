@@ -1,20 +1,27 @@
 import { useEffect, useState, lazy, ReactElement } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 import { cn } from '$lib/utils';
-
-import styles from './home.module.css';
-
-import { useAuthStore } from '$features/auth/store/auth';
-import SvgPlaceholder from '$components/SvgPlaceholder';
+import { defaultTransition as transition } from '$lib/motion';
 
 import Card from '$components/Card/Card';
 
+import { useAuthStore } from '$features/auth/store/auth';
 import { useFundsStore } from '$features/funds/store/funds';
+
+import styles from './home.module.css';
 
 const SubPage = lazy(() => import('$lib/layouts/SubPage/SubPage'));
 
+const profileNameVariant = {
+  exit: { opacity: 0, transition },
+  enter: {
+    opacity: 1,
+    transition
+  }
+};
 const AuthBox = observer(() => {
   const authStore = useAuthStore();
   const fundsStore = useFundsStore();
@@ -34,20 +41,35 @@ const AuthBox = observer(() => {
   }, []);
 
   return (
-    <span>
+    <motion.span className={styles.welcome} initial="exit" animate="enter" exit="exit">
       Welcome back <br />
-      {profile?.name
-        .split(' ')
-        .map((s) => s[0].toUpperCase() + s.slice(1))
-        .join(' ')}
-    </span>
+      <motion.span className={styles.profileName} variants={profileNameVariant}>
+        &nbsp;
+        {profile?.name
+          .split(' ')
+          .map((s) => s[0].toUpperCase() + s.slice(1))
+          .join(' ')}
+      </motion.span>
+    </motion.span>
   );
 });
 
-const LinkCard = ({ to, title, img }: { to: string; title: string; img: string | ReactElement }) => {
+const LinkCard = ({
+  to,
+  title,
+  variant,
+  style,
+  img
+}: {
+  to: string;
+  title: string;
+  variant?: string;
+  style?: React.CSSProperties;
+  img: string | ReactElement;
+}) => {
   return (
-    <Link to={to} className={styles.launcherButton}>
-      <Card className={styles.launcherCard} title={title} img={img} />
+    <Link to={to} className={cn('launcherButton', styles.launcherButton)} data-variant={variant} style={style}>
+      <Card className={cn('launcherCard', styles.launcherCard)} title={title} img={img} />
     </Link>
   );
 };
@@ -57,13 +79,30 @@ const home = () => {
     <SubPage title={<AuthBox />} className={cn('home', 'wrapper')}>
       <ul className={styles.launcher}>
         <li>
-          <LinkCard to="/funds/deposit" title="Deposit" img={<img src="/icons/deposit2.svg" alt="Deposit" />} />
+          <LinkCard
+            to="/funds/deposit"
+            title="Deposit"
+            variant="emoji"
+            img={<div style={{ backgroundColor: 'var(--red-4)' }}>🍅</div>}
+          />
+          {/* <LinkCard to="/funds/deposit" title="Deposit" img={<img src="/icons/deposit2.svg" alt="Deposit" />} /> */}
         </li>
         <li>
-          <LinkCard to="/funds/withdraw" title="Withdraw" img={<img src="/icons/withdraw2.svg" alt="Withdraw" />} />
+          <LinkCard
+            to="/funds/withdraw"
+            title="Withdraw"
+            variant="emoji"
+            img={<div style={{ backgroundColor: 'var(--orange-4)' }}>🍊</div>}
+          />
         </li>
         <li>
-          <LinkCard to="/funds/statement" title="Statement" img={<img src="/icons/statement2.svg" alt="Statement" />} />
+          <LinkCard
+            to="/funds/statement"
+            title="Statement"
+            variant="emoji"
+            img={<div style={{ backgroundColor: 'var(--pink-4)' }}>🍇</div>}
+          />
+          {/* <LinkCard to="/funds/statement" title="Statement" img={<img src="/icons/statement2.svg" alt="Statement" />} /> */}
         </li>
       </ul>
     </SubPage>

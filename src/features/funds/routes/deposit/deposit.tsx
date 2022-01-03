@@ -21,12 +21,12 @@ const DepositError = ({ message }: { message: string }) => {
 const DepositSuccess = ({ amount, balance }: { amount: number; balance: number }) => {
   let navigate = useNavigate();
 
-  function handleExitClick(ev: React.PointerEvent) {
+  function handleExitClick(ev: React.MouseEvent<HTMLButtonElement>) {
     ev.preventDefault();
     navigate('/auth/logout');
   }
 
-  function handleBackClick(ev: React.PointerEvent) {
+  function handleBackClick(ev: React.MouseEvent<HTMLButtonElement>) {
     ev.preventDefault();
     navigate(-1);
   }

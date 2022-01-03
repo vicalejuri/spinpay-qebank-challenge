@@ -1,11 +1,12 @@
 import React, { lazy, Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-
-import { ErrorBoundary } from 'react-error-boundary';
-import Preloader from '$components/Preloader/Preloader';
+// import { AnimatePresence } from 'framer-motion';
 
 import Router from './router';
+
+import Preloader from '$components/Preloader/Preloader';
+import { ErrorBoundary } from 'react-error-boundary';
 
 const StoreProvider = lazy(() => import('./lib/stores'));
 
@@ -24,7 +25,9 @@ ReactDOM.render(
       <ErrorBoundary FallbackComponent={({ error }) => <pre>Something went wrong: {error.message}</pre>}>
         <StoreProvider>
           <BrowserRouter>
+            {/* <AnimatePresence exitBeforeEnter initial={false}> */}
             <Router />
+            {/* </AnimatePresence> */}
           </BrowserRouter>
         </StoreProvider>
       </ErrorBoundary>
