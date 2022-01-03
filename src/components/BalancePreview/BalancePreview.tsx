@@ -23,7 +23,7 @@ export const BalancePreview = observer(() => {
   return (
     <div className={cn(styles.balancePreview)}>
       <div className={cn(styles.title)}>Account Balance</div>
-      <button className={cn(styles.balanceButton)} data-visible={visible} onPointerDown={toggleVisible}>
+      <button className={cn(styles.balanceButton)} data-visible={visible} onClick={toggleVisible}>
         <span className={cn(styles.balance)}>{visible ? balanceValue : balanceValue.replaceAll(/./g, '*')}</span>
         {visible ? <EyeOpenIcon /> : <EyeNoneIcon />}
       </button>

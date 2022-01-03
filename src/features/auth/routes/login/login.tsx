@@ -70,7 +70,7 @@ export const Login = function () {
         <h1 className="headline">{title}</h1>
         <>
           {errMessage && <div className="error">{errMessage}</div>}
-          <button className={cn('button', 'filled', 'invert')} onPointerDown={login}>
+          <button className={cn('button', 'filled', 'invert')} onClick={login}>
             {errMessage ? 'Tentar novamente' : 'Continuar'}
           </button>
         </>

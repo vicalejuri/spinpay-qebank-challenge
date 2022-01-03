@@ -26,7 +26,7 @@ export default observer(function Logout() {
     <SubPage title="" className={cn('wrapper', styles.logout)}>
       <div className={cn(styles.pageContainer)} title={'alors'}>
         <h1 className="headline">Thank you for using QEBank!</h1>
-        <button className={cn('button', 'outlined')} onPointerDown={afterLogout}>
+        <button className={cn('button', 'outlined')} onClick={afterLogout}>
           Entrar novamente
         </button>
       </div>

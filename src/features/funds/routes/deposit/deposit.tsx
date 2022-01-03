@@ -41,10 +41,10 @@ const DepositSuccess = ({ amount, balance }: { amount: number; balance: number }
       </div>
 
       <div className={styles.actions}>
-        <button className="button outlined" onPointerDown={handleExitClick}>
+        <button className="button outlined" onClick={handleExitClick}>
           Safe exit
         </button>
-        <button className="button filled invert" onPointerDown={handleBackClick}>
+        <button className="button filled invert" onClick={handleBackClick}>
           Back to menu
         </button>
       </div>

@@ -1,7 +1,7 @@
 import { cn } from '$lib/utils';
 import { useNavigate } from 'react-router-dom';
 
-import { ArrowLeftIcon } from '@radix-ui/react-icons';
+import styles from './BackButton.module.css';
 
 export default function BackButton({ className }: { className: string | string[] }) {
   let navigate = useNavigate();
@@ -12,8 +12,8 @@ export default function BackButton({ className }: { className: string | string[]
   }
 
   return (
-    <a href="" onPointerDown={handleClick} className={cn(className)}>
-      <ArrowLeftIcon />
-    </a>
+    <button onClick={handleClick} className={cn(className, styles.backbutton)} aria-label="Go to previous page">
+      ←
+    </button>
   );
 }

@@ -13,7 +13,9 @@
 }
 
 .balanceButton {
-  all: unset;
+  background: none;
+  border: none;
+  padding: 0;
 
   flex: 1 1 100%;
   display: flex;
