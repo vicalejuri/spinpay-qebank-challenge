@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
+
 import { cn, toCurrencyFormat } from '$lib/utils';
 
 import type { AtmChange, AtmCoin } from '$features/atm/types';
-import { useAtmStore, defaultAtmStock } from '$features/atm/store/atm';
 import { mergeAtmCoins, sumAtmCoins } from '$features/atm/utils';
+import { change } from '$features/atm/utils/change';
+import { useAtmStore } from '$features/atm/store/atm';
 
 import styles from './ChangeBox.module.css';
 
@@ -36,6 +38,7 @@ const SingleNote = ({
       <div className={styles.value}>{toCurrencyFormat(note.value)}</div>
       <div className={styles.suffix}>
         <button
+          type="button"
           onClick={onDecreaseHandler}
           className={cn('decreaseBtn', 'button', 'transparent', styles.coinSubButtons)}
         >
@@ -43,6 +46,7 @@ const SingleNote = ({
         </button>
         <hr className={styles.separator} />
         <button
+          type="button"
           onClick={onIncreaseHandler}
           className={cn('increaseBtn', 'button', 'transparent', styles.coinSubButtons)}
         >
@@ -55,15 +59,20 @@ const SingleNote = ({
 const SingleCoin = SingleNote;
 
 /**
- * Customize the change given by the ATM
+ * Customize the change offered by the ATM
  */
-export const ChangeBox = ({ amount, disabled }: { amount: number; disabled: boolean }) => {
+export const ChangeBox = ({
+  amount,
+  disabled,
+  preferredCoinsOrNotes,
+  setPreferredCoinsOrNotes
+}: {
+  amount: number;
+  disabled: boolean;
+  preferredCoinsOrNotes: AtmCoin[];
+  setPreferredCoinsOrNotes: React.Dispatch<React.SetStateAction<AtmCoin[]>>;
+}) => {
   const atm = useAtmStore();
-
-  /** Maintain a local list of prefered notes/coins */
-  const [preferredCoinsOrNotes, setPreferredCoinsOrNotes] = useState<AtmCoin[]>(
-    defaultAtmStock.map((n) => ({ ...n, length: 0 }))
-  );
 
   /** The total value of the preferred change */
   const preferredAmountSoFar = sumAtmCoins(preferredCoinsOrNotes);
@@ -75,7 +84,6 @@ export const ChangeBox = ({ amount, disabled }: { amount: number; disabled: bool
   const coins = preferredCoinsOrNotes.filter((note) => note.value <= 1);
 
   const increasePreferredCoin = (noteOrCoin: AtmCoin) => {
-    const amountOfThisCoin = noteOrCoin.value * noteOrCoin.length;
     /** Should only increase until we reach remainder  */
     if (noteOrCoin.value <= remainder) {
       setPreferredCoinsOrNotes(mergeAtmCoins(preferredCoinsOrNotes, [{ ...noteOrCoin, length: 1 }]));
@@ -90,7 +98,14 @@ export const ChangeBox = ({ amount, disabled }: { amount: number; disabled: bool
   const increaseCoin = useCallback(increasePreferredCoin, [amount, remainder]);
   const decreaseCoin = useCallback(decreasePreferredCoin, [amount, remainder]);
 
-  useEffect(() => {}, [amount]);
+  useEffect(() => {
+    /** Lets always suggest a change */
+    const suggestedChange = change(atm.stock, remainder);
+    if (suggestedChange.length > 0) {
+      console.log('ATM suggested change:', suggestedChange);
+      setPreferredCoinsOrNotes(mergeAtmCoins(preferredCoinsOrNotes, suggestedChange));
+    }
+  }, [amount, remainder]);
 
   return (
     <div className={styles.wrapper} data-disabled={disabled}>

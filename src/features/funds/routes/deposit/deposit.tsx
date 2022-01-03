@@ -1,4 +1,4 @@
-import { useCallback, useState, FormEvent, useRef } from 'react';
+import { useCallback, useState, FormEvent, useRef, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,6 +10,7 @@ import Input from '$components/Input/Input';
 import SvgPlaceholder from '$components/SvgPlaceholder';
 
 import styles from './deposit.module.css';
+import { useAuthStore } from '$features/auth/store/auth';
 
 type DepositScreenType = 'form' | 'success' | 'error';
 
@@ -121,13 +122,11 @@ const DepositBox = function DepositButton({
 
 const DepositPage = observer(() => {
   const funds = useFundsStore();
+  const auth = useAuthStore();
 
   /** 1. What screen should render? */
   const [activeScreen, setActiveScreen] = useState<DepositScreenType>('form');
   const [activeTitle, setActiveTitle] = useState('Deposit');
-
-  // const [activeScreen, setActiveScreen] = useState<DepositScreenType>('success');
-  // const [activeTitle, setActiveTitle] = useState('Operation completed');
 
   /** 2. Operation parameters */
   const [amount, setActiveAmount] = useState(100);
@@ -135,6 +134,16 @@ const DepositPage = observer(() => {
   /** 3. Operation feedback */
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  /** todo: This side-effect can be shared by all /funds/routes */
+  useEffect(() => {
+    (async () => {
+      if (funds.balanceTimestamp === null) {
+        await funds.getBalance();
+      }
+    })();
+    return () => {};
+  }, []);
 
   const deposit = useCallback(
     async (amount, description) => {

@@ -1,11 +1,11 @@
-import { useCallback, useState, FormEvent, useRef } from 'react';
+import { useCallback, useState, FormEvent, useRef, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 
 import { cn, toCurrencyFormat } from '$lib/utils';
 
 import { useFundsStore } from '$features/funds/store/funds';
-import { AtmStoreProvider } from '$features/atm/store/atm';
+import { AtmStoreProvider, defaultAtmStock, useAtmStore } from '$features/atm/store/atm';
 
 import SubPage from '$lib/layouts/SubPage/SubPage';
 import Input from '$components/Input/Input';
@@ -13,6 +13,7 @@ import SvgPlaceholder from '$components/SvgPlaceholder';
 import ChangeBox from '../../components/ChangeBox/ChangeBox';
 
 import styles from './withdraw.module.css';
+import { AtmCoin } from '$features/atm/types';
 
 type WithdrawScreenType = 'form' | 'success' | 'error';
 
@@ -56,36 +57,41 @@ const WithdrawSuccess = ({ amount, balance }: { amount: number; balance: number 
 };
 
 const WithdrawBox = ({
-  onSubmit,
+  maxAmount,
   loading,
-  disableSubmit = false
+  disableSubmit = false,
+  onSubmit
 }: {
-  onSubmit: (amount: number) => void;
+  maxAmount: number;
   loading: boolean;
   disableSubmit?: boolean;
+  onSubmit: (amount: number, preferredNotes: AtmCoin[]) => void;
 }) => {
   const form = useRef(null);
 
+  /** Prefered notes/coins that user selected */
   const [amount, setAmount] = useState(0);
-  const [amountError, setAmountError] = useState('xx');
+  const [preferredCoinsOrNotes, setPreferredCoinsOrNotes] = useState<AtmCoin[]>(
+    defaultAtmStock.map((n) => ({ ...n, length: 0 }))
+  );
+  const [amountError, setAmountError] = useState('Amount is required');
 
   const rulesForAmount = [
     (amount: String | number) => String(amount).trim() !== '' || 'Amount is required',
     (amount: String | number) => !isNaN(Number(amount)) || 'Amount should be a number',
-    (amount: String | number) => Number(amount) > 0 || 'Amount should be positive'
+    (amount: String | number) => Number(amount) > 0 || 'Amount should be positive',
+    (amount: String | number) => Number(amount) <= maxAmount || 'Cant withdraw more than your balance'
   ];
 
   const submitHandler = useCallback(
     async (ev: FormEvent<HTMLFormElement>) => {
       ev.preventDefault();
 
-      const data = new FormData(form.current);
-
       if (amountError === '') {
-        await onSubmit(amount);
+        onSubmit(amount, preferredCoinsOrNotes);
       }
     },
-    [form]
+    [form, amount, amountError, preferredCoinsOrNotes]
   );
 
   const onAmountChange = useCallback((amount, errors) => {
@@ -106,7 +112,12 @@ const WithdrawBox = ({
         prefix={<span className={styles.amountPrefix}>R$</span>}
       />
 
-      <ChangeBox amount={amount} disabled={disableSubmit || amountError !== ''} />
+      <ChangeBox
+        amount={amount}
+        disabled={disableSubmit || amountError !== ''}
+        preferredCoinsOrNotes={preferredCoinsOrNotes}
+        setPreferredCoinsOrNotes={setPreferredCoinsOrNotes}
+      />
 
       <div className={styles.actions}>
         <input
@@ -122,6 +133,7 @@ const WithdrawBox = ({
 
 const WithdrawPage = observer(() => {
   const funds = useFundsStore();
+  const atm = useAtmStore();
 
   /** 1. What screen should render? */
   const [activeScreen, setActiveScreen] = useState<WithdrawScreenType>('form');
@@ -135,13 +147,23 @@ const WithdrawPage = observer(() => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const withdraw = useCallback(async () => {
-    console.log('Withdrawing TANTOS reais');
+  /** todo: This side-effect can be shared by all /funds/routes */
+  useEffect(() => {
+    (async () => {
+      if (funds.balanceTimestamp === null) {
+        await funds.getBalance();
+      }
+    })();
+    return () => {};
+  }, []);
+
+  const withdraw = async (amount, preferredNotes: AtmCoin[]) => {
+    console.info(`Withdrawing ${amount} reais`);
     setActiveAmount(amount);
     setLoading(true);
     try {
-      // todo: use ATM store
-      const r = await funds.deposit(amount);
+      await funds.withdraw(amount);
+      atm.withdraw(amount, preferredNotes);
       setActiveScreen('success');
       setActiveTitle('Operation completed');
     } catch (e: any) {
@@ -152,11 +174,13 @@ const WithdrawPage = observer(() => {
     } finally {
       setLoading(false);
     }
-  }, [funds]);
+  };
 
   return (
     <SubPage title={activeTitle} className={cn('withdraw', 'wrapper')} backButton={activeScreen == 'form'}>
-      {activeScreen === 'form' && <WithdrawBox onSubmit={withdraw} loading={loading} disableSubmit={loading} />}
+      {activeScreen === 'form' && (
+        <WithdrawBox onSubmit={withdraw} maxAmount={funds.balance} loading={loading} disableSubmit={loading} />
+      )}
       {activeScreen === 'success' && <WithdrawSuccess amount={amount} balance={funds?.balance} />}
       {activeScreen === 'error' && <WithdrawError message={errorMessage} />}
     </SubPage>
