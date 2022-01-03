@@ -30,12 +30,12 @@ const WithdrawError = ({ message }: { message: string }) => {
 const WithdrawSuccess = ({ amount, balance }: { amount: number; balance: number }) => {
   let navigate = useNavigate();
 
-  function handleExitClick(ev: React.PointerEvent) {
+  function handleExitClick(ev: React.MouseEvent<HTMLButtonElement>) {
     ev.preventDefault();
     navigate('/auth/logout');
   }
 
-  function handleBackClick(ev: React.PointerEvent) {
+  function handleBackClick(ev: React.MouseEvent<HTMLButtonElement>) {
     ev.preventDefault();
     navigate(-1);
   }
@@ -50,10 +50,10 @@ const WithdrawSuccess = ({ amount, balance }: { amount: number; balance: number 
       </div>
 
       <div className={styles.actions}>
-        <button className="button outlined" onPointerDown={handleExitClick}>
+        <button className="button outlined" onClick={handleExitClick}>
           Safe exit
         </button>
-        <button className="button filled invert" onPointerDown={handleBackClick}>
+        <button className="button filled invert" onClick={handleBackClick}>
           Back to menu
         </button>
       </div>
@@ -106,11 +106,10 @@ const WithdrawBox = ({
     setAmount(Number(amount));
     setAmountError(errors.length ? errors[0] : '');
 
-    // After user edited the amount with a invalid value,
-    // we must reset the preferred coins/notes
-    // if (errors.length) {
+    // ATTENTION:
+    // After user edited the amount we must reset the preferred coins/notes,
+    // otherwise, preferredNotes and amount will not match
     setPreferredCoinsOrNotes(defaultAtmStock.map((n) => ({ ...n, length: 0 })));
-    // }
   }, []);
 
   return (

@@ -10,12 +10,12 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <div className={cn('wrapper', styles.wrapper)}>
-        <Link to="/funds/" className={styles.logo} style={{ fontSize: 48, fontWeight: 900 }}>
+        <Link to="/funds/" className={styles.logo}>
           🥝
         </Link>
+        <BalancePreview className={styles.middle} />
+        <hr />
         <div className={styles.right}>
-          <BalancePreview />
-          <hr />
           <Link to="/auth/logout">Logout</Link>
         </div>
       </div>

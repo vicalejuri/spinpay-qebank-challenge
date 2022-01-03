@@ -12,7 +12,7 @@ import styles from './BalancePreview.module.css';
  * Show balance preview.
  * Allow user to hide balance.
  */
-export const BalancePreview = observer(() => {
+export const BalancePreview = observer(({ className }: { className: string | string[] }) => {
   const funds = useFundsStore();
 
   const [visible, setVisible] = useState(true);
@@ -21,7 +21,7 @@ export const BalancePreview = observer(() => {
   const balanceValue = toCurrencyFormat(funds?.balance || 0);
 
   return (
-    <div className={cn(styles.balancePreview)}>
+    <div className={cn(styles.balancePreview, className)}>
       <div className={cn(styles.title)}>Account Balance</div>
       <button className={cn(styles.balanceButton)} data-visible={visible} onClick={toggleVisible}>
         <span className={cn(styles.balance)}>{visible ? balanceValue : balanceValue.replaceAll(/./g, '*')}</span>

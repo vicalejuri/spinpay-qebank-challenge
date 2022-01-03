@@ -63,3 +63,9 @@
 .listItem[data-variant='withdraw'] .amount {
   color: var(--red-6);
 }
+
+@media (--sm-n-below) {
+  .listItem {
+    grid-gap: 0.5em;
+  }
+}

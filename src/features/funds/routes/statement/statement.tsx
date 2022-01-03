@@ -42,7 +42,6 @@ export const Statement = function Statement() {
 
       // And finally back to a array, so we can iterate over easily
       const groupedByMonth = Array.from(statementsMapByMonth);
-      console.log('group', groupedByMonth);
 
       setStatements(statements);
       setStatementsByMonth(groupedByMonth);
@@ -55,6 +54,11 @@ export const Statement = function Statement() {
   }, [funds]);
 
   useEffect(() => {
+    (async () => {
+      if (funds.balanceTimestamp === null) {
+        await funds.getBalance();
+      }
+    })();
     getStatement();
   }, []);
 
