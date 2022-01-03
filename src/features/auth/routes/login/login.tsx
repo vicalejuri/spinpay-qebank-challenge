@@ -66,8 +66,8 @@ export const Login = function () {
 
   return (
     <SubPage title="" className={cn('wrapper', styles.login)}>
-      <div className={cn(styles.pageContainer)} title={title}>
-        <h1>{title}</h1>
+      <div className={cn(styles.pageContainer)}>
+        <h1 className="headline">{title}</h1>
         <>
           {errMessage && <div className="error">{errMessage}</div>}
           <button className={cn('button', 'filled', 'invert')} onPointerDown={login}>
