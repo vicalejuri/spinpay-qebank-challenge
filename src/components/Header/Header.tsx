@@ -4,7 +4,7 @@ import { cn } from '$lib/utils';
 
 import BalancePreview from '../BalancePreview/BalancePreview';
 
-import styles from './Header.module.css';
+import styles from './Header.module.pcss';
 
 const Header = () => {
   return (

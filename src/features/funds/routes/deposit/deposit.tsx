@@ -7,10 +7,9 @@ import { useFundsStore } from '$features/funds/store/funds';
 
 import SubPage from '$lib/layouts/SubPage/SubPage';
 import Input from '$components/Input/Input';
-import SvgPlaceholder from '$components/SvgPlaceholder';
+import Checkmark from '$components/Checkmark/Checkmark';
 
-import styles from './deposit.module.css';
-import { useAuthStore } from '$features/auth/store/auth';
+import styles from './deposit.module.pcss';
 
 type DepositScreenType = 'form' | 'success' | 'error';
 
@@ -38,7 +37,8 @@ const DepositSuccess = ({ amount, balance }: { amount: number; balance: number }
 
   return (
     <div className={styles.depositSuccess}>
-      <img className={styles.operationImage} src={SvgPlaceholder({ width: 600, height: 300 })} />
+      <Checkmark />
+
       <div className={styles.operationLabel}>{toCurrencyFormat(amount)} deposited</div>
       <div className={styles.balanceBox}>
         Actual account balance:

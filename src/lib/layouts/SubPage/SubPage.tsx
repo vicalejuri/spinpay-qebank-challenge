@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { cn } from '$lib/utils';
 
 import BackButton from '$components/BackButton/BackButton';
-import styles from './subpage.module.css';
+import styles from './subpage.module.pcss';
 
 import { defaultTransition as transition } from '$lib/motion';
 

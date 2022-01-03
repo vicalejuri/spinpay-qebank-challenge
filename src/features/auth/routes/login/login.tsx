@@ -2,13 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 
-import SubPage from '$lib/layouts/SubPage/SubPage';
 import { cn } from '$lib/utils';
 
-import Card from '$components/Card/Card';
-import styles from './login.module.css';
-
+import SubPage from '$lib/layouts/SubPage/SubPage';
 import { useAuthStore } from '$features/auth/store/auth';
+
+import styles from './login.module.css';
 
 /** After successful login, redirect browser to this route */
 const targetRoute = '/funds';

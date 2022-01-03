@@ -5,16 +5,17 @@ import { useNavigate } from 'react-router-dom';
 import { cn, toCurrencyFormat } from '$lib/utils';
 
 import { useFundsStore } from '$features/funds/store/funds';
-import { AtmStoreProvider, defaultAtmStock, useAtmStore } from '$features/atm/store/atm';
+import { defaultAtmStock, useAtmStore } from '$features/atm/store/atm';
 
 import SubPage from '$lib/layouts/SubPage/SubPage';
 import Input from '$components/Input/Input';
-import SvgPlaceholder from '$components/SvgPlaceholder';
+import Checkmark from '$components/Checkmark/Checkmark';
 import ChangeBox from '../../components/ChangeBox/ChangeBox';
 
-import styles from './withdraw.module.css';
 import { AtmCoin } from '$features/atm/types';
 import { sumAtmCoins } from '$features/atm/utils';
+
+import styles from './withdraw.module.pcss';
 
 type WithdrawScreenType = 'form' | 'success' | 'error';
 
@@ -42,7 +43,7 @@ const WithdrawSuccess = ({ amount, balance }: { amount: number; balance: number 
 
   return (
     <div className={styles.withdrawSuccess}>
-      <img className={styles.operationImage} src={SvgPlaceholder({ width: 600, height: 300 })} />
+      <Checkmark />
       <div className={styles.operationLabel}>withdraw your {toCurrencyFormat(amount)} </div>
       <div className={styles.balanceBox}>
         Actual account balance:
