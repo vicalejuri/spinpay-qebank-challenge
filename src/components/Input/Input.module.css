@@ -15,11 +15,9 @@
 
 .inputWrapper {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   min-height: 48px;
-
-  background-color: red;
 
   /** Use box-shadow instead of border, to avoid layout shifting */
   box-shadow: 0 0 0 calc(var(--input-border) / 2) var(--gray-3);
@@ -63,4 +61,5 @@
 .inputElement:invalid {
   box-shadow: 0 0 0 var(--input-border) var(--red-3);
   position: relative;
+  animation: var(--animation-shake-x);
 }

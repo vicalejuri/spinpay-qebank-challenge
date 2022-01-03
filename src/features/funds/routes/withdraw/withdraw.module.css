@@ -1,4 +1,4 @@
-.depositBox {
+.withdrawBox {
   width: 100%;
   min-height: 300px;
 
@@ -37,7 +37,7 @@
   }
 }
 
-.depositSuccess {
+.withdrawSuccess {
   width: 100%;
   min-height: 300px;
   height: 70vh;

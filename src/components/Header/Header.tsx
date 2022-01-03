@@ -10,8 +10,8 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <div className={cn('wrapper', styles.wrapper)}>
-        <Link to="/funds/" className={styles.logo}>
-          <img src="/coin.svg" loading="eager" height="48px" alt="ATM logo" />
+        <Link to="/funds/" className={styles.logo} style={{ fontSize: 48, fontWeight: 900 }}>
+          💰
         </Link>
         <div className={styles.right}>
           <BalancePreview />

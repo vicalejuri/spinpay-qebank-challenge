@@ -2,10 +2,10 @@ import React, { lazy, Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 
-import { ErrorBoundary } from 'react-error-boundary';
-import Preloader from '$components/Preloader/Preloader';
-
 import Router from './router';
+
+import Preloader from '$components/Preloader/Preloader';
+import { ErrorBoundary } from 'react-error-boundary';
 
 const StoreProvider = lazy(() => import('./lib/stores'));
 
