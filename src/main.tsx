@@ -1,11 +1,10 @@
 import React, { lazy, Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-// import { AnimatePresence } from 'framer-motion';
-
 import Router from './router';
 
 import Preloader from '$components/Preloader/Preloader';
+import ErrorFallback from '$components/ErrorFallback/ErrorFallback';
 import { ErrorBoundary } from 'react-error-boundary';
 
 const StoreProvider = lazy(() => import('./lib/stores'));
@@ -22,7 +21,7 @@ const StoreProvider = lazy(() => import('./lib/stores'));
 ReactDOM.render(
   <React.StrictMode>
     <Suspense fallback={<Preloader />}>
-      <ErrorBoundary FallbackComponent={({ error }) => <pre>Something went wrong: {error.message}</pre>}>
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
         <StoreProvider>
           <BrowserRouter>
             {/* <AnimatePresence exitBeforeEnter initial={false}> */}

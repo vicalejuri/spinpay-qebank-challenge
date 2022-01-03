@@ -10,9 +10,9 @@ html {
   --link-visited-light: var(--grape-9);
 
   --surface1-light: var(--gray-0);
-  --surface2-light: var(--gray-1);
-  --surface3-light: var(--gray-2);
-  --surface4-light: var(--gray-3);
+  --surface2-light: var(--gray-2);
+  --surface3-light: var(--gray-4);
+  --surface4-light: var(--gray-6);
   --surfaceInvert-light: var(--gray-9);
 
   --surface-shadow-light: 200 10% 20%;

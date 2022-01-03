@@ -49,6 +49,15 @@ h6 {
   overflow-wrap: break-word;
 }
 
+hr {
+  border-style: solid;
+  border-color: var(--surfaceInvert);
+  border-top-width: 1px;
+  border-left-width: 0px;
+  border-right-width: 0px;
+  border-bottom-width: 0px;
+}
+
 /** Create a root stacking ctx */
 #root {
   isolation: isolate;

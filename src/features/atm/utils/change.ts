@@ -1,20 +1,8 @@
-import { SingleCoinBag } from '../types';
+import { AtmCoin } from '../types';
+import { roundFloat, GetCoins } from './index';
 
 // Change Tolerance, stop algorithm when remainder of change is lower  (for BRL/USD it's 1 cent)
 const EPSILON = 10 ** -2;
-
-const GetCoins = (coin) => ({
-  /**
-   * Get the maximum quantity of a coin possible and the remainder, where $value < amount
-   * eg: [4,30] = GetCoins(50).closesTo(230)
-   *  Change of 230 in 50 coin is: (4 coins of 50, remainder is 30)
-   */
-  closestTo: (amount) => {
-    return [Math.floor(amount / coin), amount % coin].map(roundFloat);
-  }
-});
-
-const roundFloat = (x) => Number(x.toFixed(2));
 
 /**
  * Retrieve a change for amount.
@@ -26,11 +14,11 @@ const roundFloat = (x) => Number(x.toFixed(2));
  * It also assumes that there's a 1 coin unit, so that
  * every integer number can be expressed as a sum of +1 coin.
  *
- * @param {number[]} availableCoins
+ * @param {AtmCoin[]} availableCoins
  * @param {number} amount
  * @param {agg=[]} agg
  */
-export const change = (availableCoins, _amount, agg = []): SingleCoinBag[] => {
+export const change = (availableCoins: AtmCoin[], _amount: number, agg: AtmCoin[] = []): AtmCoin[] => {
   const [coin, ...nextCoins] = availableCoins;
 
   // No more coins to process, return the bag
@@ -40,16 +28,16 @@ export const change = (availableCoins, _amount, agg = []): SingleCoinBag[] => {
 
   let amount = roundFloat(Number(_amount));
 
-  if (coin > amount) {
+  if (coin.value > amount) {
     // this coin doesnt help us, try next coin
     return change(nextCoins, amount, agg);
   } else {
-    const [howMuchCoins, remainder] = GetCoins(coin).closestTo(amount);
+    const [howMuchCoins, remainder] = GetCoins(coin.value).closestTo(amount);
 
     // Ok, this coin helps us get close to amount
     //  add it to the bag
     if (howMuchCoins >= 1) {
-      agg.push([coin, howMuchCoins]);
+      agg.push({ value: coin.value, length: howMuchCoins });
     }
 
     // We're done when remainder = 0, or close enough.

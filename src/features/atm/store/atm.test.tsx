@@ -86,15 +86,15 @@ describe('atm/store - AtmStore Domain module', () => {
 
       return expect(withdrawFn()).to.be.rejectedWith(AtmChangePreferencesError);
     });
-    it('Must return amount as a bag of coins/notes', () => {
+    it('Must return amount as set of coins/notes', () => {
       const store = new AtmStore(defaultAtmCoins);
       const bag = store.withdraw(550.5);
 
       expect(bag.amount).to.eql(550.5);
       expect(bag.change).to.eql([
-        [100, 5],
-        [50, 1],
-        [0.5, 1]
+        { value: 100, length: 5 },
+        { value: 50, length: 1 },
+        { value: 0.5, length: 1 }
       ]);
     });
     it('Must return the preferedNotes + loose change', () => {
@@ -107,11 +107,11 @@ describe('atm/store - AtmStore Domain module', () => {
       ]);
       expect(bag.amount).to.eql(550.5);
       expect(bag.change).to.eql([
-        [100, 4],
-        [50, 2],
-        [20, 2],
-        [10, 1],
-        [0.5, 1]
+        { value: 100, length: 4 },
+        { value: 50, length: 2 },
+        { value: 20, length: 2 },
+        { value: 10, length: 1 },
+        { value: 0.5, length: 1 }
       ]);
     });
     it('Must join the preferedNotes with loose change', () => {
@@ -122,9 +122,9 @@ describe('atm/store - AtmStore Domain module', () => {
       ]);
       expect(bag.amount).to.eql(550.5);
       expect(bag.change).to.eql([
-        [100, 4],
-        [50, 3],
-        [0.5, 1]
+        { value: 100, length: 4 },
+        { value: 50, length: 3 },
+        { value: 0.5, length: 1 }
       ]);
     });
     it('Must remove the change from the stock of the ATM', () => {

@@ -36,7 +36,7 @@ export type SingleCoinBag = [number, number];
 /** Express `amount` in change, as the sum of notes/coins */
 export interface AtmChange {
   amount: number;
-  change: Array<SingleCoinBag>;
+  change: Array<AtmCoin>;
 }
 
 /**
