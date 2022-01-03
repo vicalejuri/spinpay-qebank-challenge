@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Router from './router';
 
 import Preloader from '$components/Preloader/Preloader';
+import ErrorFallback from '$components/ErrorFallback/ErrorFallback';
 import { ErrorBoundary } from 'react-error-boundary';
 
 const StoreProvider = lazy(() => import('./lib/stores'));
@@ -21,7 +22,7 @@ const StoreProvider = lazy(() => import('./lib/stores'));
 ReactDOM.render(
   <React.StrictMode>
     <Suspense fallback={<Preloader />}>
-      <ErrorBoundary FallbackComponent={({ error }) => <pre>Something went wrong: {error.message}</pre>}>
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
         <StoreProvider>
           <BrowserRouter>
             <Router />

@@ -8,6 +8,13 @@
   background-color: var(--surface2, #d2d2d2);
   color: var(--text2, #333);
   box-shadow: var(--inner-shadow-0);
+
+  & hr {
+    width: 1px;
+    height: 2rem;
+    border: 0;
+    border-right: 1px solid var(--text2, #333);
+  }
 }
 
 .wrapper {
@@ -33,11 +40,4 @@
   display: flex;
   align-items: center;
   gap: 1em;
-}
-
-hr {
-  width: 1px;
-  height: 2rem;
-  border: 0;
-  border-right: 1px solid var(--text2, #333);
 }

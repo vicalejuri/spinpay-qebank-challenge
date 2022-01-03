@@ -39,6 +39,24 @@ a[href] {
   }
 }
 
+a.no-link {
+  color: initial;
+  &:visited {
+    color: initial;
+  }
+}
+
 .headline {
   font-size: var(--font-size-fluid-3);
+}
+
+/** h2 and beyound */
+.subheadline {
+  font-size: var(--font-size-fluid-1);
+}
+
+.caption {
+  color: var(--text2);
+  font-size: var(--font-size-fluid-0);
+  font-weight: normal;
 }

@@ -4,6 +4,10 @@ import type { RouteObject } from 'react-router-dom';
 const FundsStoreProvider = lazy(() =>
   import('$features/funds/store/funds').then((module) => ({ default: module.FundsStoreProvider }))
 );
+const AtmStoreProvider = lazy(() =>
+  import('$features/atm/store/atm').then((module) => ({ default: module.AtmStoreProvider }))
+);
+
 const RequireAuth = lazy(() => import('$features/auth/hooks/RequireAuth'));
 
 const PancakeStackLayout = lazy(() => import('$lib/layouts/PancakeStack/PancakeStack'));
@@ -26,7 +30,14 @@ const FundsRoutes: RouteObject[] = [
     children: [
       { index: true, element: <FundsHome /> },
       { path: 'deposit', element: <Deposit /> },
-      { path: 'withdraw', element: <Withdraw /> },
+      {
+        path: 'withdraw',
+        element: (
+          <AtmStoreProvider>
+            <Withdraw />
+          </AtmStoreProvider>
+        )
+      },
       { path: 'statement', element: <Statement /> }
     ]
   }

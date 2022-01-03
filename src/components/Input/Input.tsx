@@ -24,6 +24,8 @@ export interface InputProps {
   step?: number;
 
   placeholder?: string;
+
+  onChange?: (value: string | number, errors?: string[]) => void;
 }
 
 const InputLabel = memo(({ id, label }: Pick<InputProps, 'id' | 'label'>) => {
@@ -46,7 +48,8 @@ const Input = ({
   rules = [],
   placeholder = '',
   min = 0,
-  step = 0.01
+  step = 0.01,
+  onChange
 }: InputProps) => {
   const [value, setValue] = useState(defaultValue);
   const [errorMessage, setErrorMessage] = useState('');
@@ -54,13 +57,19 @@ const Input = ({
   const handleChange = (e) => {
     const newValue = e.target.value;
     setValue(newValue);
+
+    let errors = [];
     if (rules) {
-      const errors = rules
+      errors = rules
         .map((rule) => rule(newValue))
         .filter((error) => error !== true)
         .map((error) => String(error));
 
       setErrorMessage(errors.length ? errors[0] : '');
+    }
+
+    if (onChange) {
+      onChange(newValue, errors);
     }
   };
 

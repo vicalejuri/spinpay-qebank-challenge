@@ -3,11 +3,14 @@ import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 
 import { cn, toCurrencyFormat } from '$lib/utils';
+
 import { useFundsStore } from '$features/funds/store/funds';
+import { AtmStoreProvider } from '$features/atm/store/atm';
 
 import SubPage from '$lib/layouts/SubPage/SubPage';
 import Input from '$components/Input/Input';
 import SvgPlaceholder from '$components/SvgPlaceholder';
+import ChangeBox from '../../components/ChangeBox/ChangeBox';
 
 import styles from './withdraw.module.css';
 
@@ -57,11 +60,14 @@ const WithdrawBox = ({
   loading,
   disableSubmit = false
 }: {
-  onSubmit: () => void;
+  onSubmit: (amount: number) => void;
   loading: boolean;
   disableSubmit?: boolean;
 }) => {
   const form = useRef(null);
+
+  const [amount, setAmount] = useState(0);
+  const [amountError, setAmountError] = useState('xx');
 
   const rulesForAmount = [
     (amount: String | number) => String(amount).trim() !== '' || 'Amount is required',
@@ -75,10 +81,17 @@ const WithdrawBox = ({
 
       const data = new FormData(form.current);
 
-      await onSubmit();
+      if (amountError === '') {
+        await onSubmit(amount);
+      }
     },
     [form]
   );
+
+  const onAmountChange = useCallback((amount, errors) => {
+    setAmount(Number(amount));
+    setAmountError(errors.length ? errors[0] : '');
+  }, []);
 
   return (
     <form ref={form} onSubmit={submitHandler} className={styles.withdrawBox}>
@@ -88,15 +101,18 @@ const WithdrawBox = ({
         type="number"
         label="Amount"
         defaultValue=""
+        onChange={onAmountChange}
         rules={rulesForAmount}
         prefix={<span className={styles.amountPrefix}>R$</span>}
       />
+
+      <ChangeBox amount={amount} disabled={disableSubmit || amountError !== ''} />
 
       <div className={styles.actions}>
         <input
           type="submit"
           className={cn('button', 'filled', 'invert', styles.submitBtn)}
-          disabled={disableSubmit}
+          disabled={disableSubmit || amountError !== ''}
           value="Confirm"
         />
       </div>

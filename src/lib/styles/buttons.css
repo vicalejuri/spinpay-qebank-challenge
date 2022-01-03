@@ -1,7 +1,6 @@
 .button {
   --outline-width: 4px;
-
-  all: unset;
+  --outline-color: var(--surfaceInvert);
 
   width: calc(100% - (var(--outline-width) * 2));
   min-height: 48px;
@@ -16,21 +15,37 @@
 
   color: var(--text1);
 
+  &[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
   &.outlined {
-    box-shadow: 0 0 0 calc(var(--outline-width) / 2) var(--surfaceInvert);
+    box-shadow: 0 0 0 calc(var(--outline-width) / 2) var(--outline-color);
     &:hover,
     &:active {
-      box-shadow: 0 0 0 calc(var(--outline-width)) var(--surfaceInvert);
+      box-shadow: 0 0 0 calc(var(--outline-width)) var(--outline-color);
+    }
+  }
+
+  &.transparent {
+    box-shadow: none;
+    background-color: transparent;
+
+    &:hover,
+    &:active {
+      box-shadow: none;
     }
   }
 
   &.filled {
+    --outline-color: var(--surface4);
     background-color: var(--surface3);
 
-    box-shadow: 0 0 0 calc(var(--outline-width) / 2) var(--surface4);
+    box-shadow: 0 0 0 calc(var(--outline-width) / 2) var(--outline-color);
     &:hover,
     &:active {
-      box-shadow: 0 0 0 calc(var(--outline-width)) var(--surface4);
+      box-shadow: 0 0 0 calc(var(--outline-width)) var(--outline-color);
     }
   }
 
@@ -38,10 +53,17 @@
     background-color: var(--surfaceInvert);
     color: var(--textInvert);
 
-    box-shadow: 0 0 0 calc(var(--outline-width) / 2) var(--surfaceInvert);
+    box-shadow: 0 0 0 calc(var(--outline-width) / 2) var(--outline-color);
     &:hover,
     &:active {
-      box-shadow: 0 0 0 calc(var(--outline-width)) var(--surfaceInvert);
+      box-shadow: 0 0 0 calc(var(--outline-width)) var(--outline-color);
+    }
+  }
+
+  &.no-hover {
+    &:hover {
+      cursor: default;
+      box-shadow: 0 0 0 calc(var(--outline-width) / 2) var(--outline-color);
     }
   }
 }
