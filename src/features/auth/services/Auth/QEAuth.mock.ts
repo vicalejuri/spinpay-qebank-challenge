@@ -5,7 +5,7 @@ export default [
   rest.post('/login', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json({ accessToken: 'admin' }));
   }),
-  rest.get(`/:id/user`, (req, res, ctx) => {
+  rest.get(`accounts/:id/user`, (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({

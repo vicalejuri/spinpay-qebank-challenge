@@ -21,17 +21,11 @@ describe('lib/stores', () => {
       expect(() => mountStoreProvider()).to.not.throw();
     });
 
-    it('Should have authStore & fundsStore available in context', () => {
+    it('Should have authStore available in context', () => {
       const wrapper = mount(<section>hello</section>, {
         wrappingComponent: StoreProvider
       });
       const provider = wrapper.getWrappingComponent();
-      // console.log('debug => ', provider.instance);
-      // console.dir(provider);
-
-      // const { authStore, fundsStore } = wrapper.getWrappingComponent().context;
-      // expect(authStore).to.be.an('object');
-      // expect(fundsStore).to.be.an('object');
     });
   });
 
@@ -48,10 +42,3 @@ describe('lib/stores', () => {
     expect(wrapper.html()).to.contains('OK');
   });
 });
-
-/**
- * criar teste para
- *  criar store global
- *  mudar authStore (login)
- *  ver se fundsStore está com authToken OK, que deve vir da authStore
- */

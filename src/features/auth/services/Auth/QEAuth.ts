@@ -46,11 +46,16 @@ export class QEAuth implements IAuthService {
       }
     });
 
-    /**
-     * Only allow a special queijo user
-     * const authIsValid = username === 'queijo' && secret === 'mortadela';
+    /***************************
+     * HACK HACK HACK HACK
+     * The API endpoint login sends the content-type incorrectly
+     ****************************
      */
-    const isAllowed = response && response?.accessToken !== '';
+    if (typeof response === 'string' && (response.startsWith('{') || response.startsWith('['))) {
+      response = JSON.parse(response);
+    }
+
+    const isAllowed = response && response?.accessToken !== undefined && response?.accessToken !== '';
 
     if (isAllowed) {
       const token = response?.accessToken;
@@ -72,7 +77,7 @@ export class QEAuth implements IAuthService {
 
   async profile(): Promise<IUserAccountHandle> {
     if (this.isAuthenticated(this.authToken)) {
-      return await fetch(`${this.endpoint}/${this.authToken.id}/user`);
+      return await fetch(`${this.endpoint}/accounts/${this.authToken.id}/user`);
     } else {
       return Promise.reject(new UnauthorizedError());
     }

@@ -17,7 +17,6 @@ export default class QEFundService extends QEAuthService implements IFundService
   fetch(url: string, options?: RequestInit): Promise<any> {
     /** Make sure we're authenticated before proceeding */
     if (!this.isAuthenticated(this.authToken)) {
-      debugger;
       throw new UnauthorizedError();
     }
     return globalFetch(url, {
@@ -44,7 +43,7 @@ export default class QEFundService extends QEAuthService implements IFundService
       return;
     } catch (e) {
       /**
-       * deposit/withdraw service has some OAUTH bugs,
+       * deposit/withdraw service has some REST invalid protocol,
        * some routes respond with a empty response, instead of valid json,
        * so we need to handle this case.
        *

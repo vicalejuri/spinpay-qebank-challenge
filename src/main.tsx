@@ -7,14 +7,14 @@ import Router from './router';
 
 const StoreProvider = lazy(() => import('./lib/stores'));
 
-if (process.env.NODE_ENV === 'development') {
-  (async function mock() {
-    const { worker } = await import('./mocks/browser');
-    worker.start({
-      onUnhandledRequest: 'bypass'
-    });
-  })();
-}
+// if (process.env.NODE_ENV === 'development') {
+//   (async function mock() {
+//     const { worker } = await import('./mocks/browser');
+//     worker.start({
+//       onUnhandledRequest: 'bypass'
+//     });
+//   })();
+// }
 
 ReactDOM.render(
   <React.StrictMode>

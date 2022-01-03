@@ -51,10 +51,10 @@ describe('auth/services/QEAuth - Authentication service module', () => {
     });
     describe('auth failed', () => {
       it('returns false', async () => {
-        stubFetch(success(''));
+        stubFetch(success({}));
         let service = new QEAuth({ endpoint });
         const authToken = await service.login('username', 'password');
-        expect(authToken).to.equal(false);
+        expect(authToken).to.eql(false);
       });
     });
   });

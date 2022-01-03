@@ -16,9 +16,10 @@ body {
 }
 
 .error {
-  color: indianred;
-  font-weight: bold;
+  color: var(--red-6);
+  font-weight: var(--font-weight-0);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-m);
+
   text-align: left;
-  font-family: monospace;
-  font-size: 1.5em;
 }

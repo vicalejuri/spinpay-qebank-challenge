@@ -26,5 +26,27 @@ describe('infra/fetch - HTTPS socket', () => {
       stubFetch(forbidden('Forbidden'));
       return expect(defaultFetch('//valid-fqdn.com')).to.be.rejectedWith(Error, 'Forbidden');
     });
+    it('Should parse JSON with comments 😤', async () => {
+      stubFetch(
+        Promise.resolve(
+          new Response(
+            `
+          {
+            "balance": 176.85, // balance amount checked in timestamp 
+            "timestamp": "2021-09-30T17:45:01Z" // last date which balance was updated 
+          }          
+        `,
+            {
+              status: 200,
+              headers: {
+                'Content-type': 'application/json'
+              }
+            }
+          )
+        )
+      );
+      const response = defaultFetch('//valid-fqdn.com');
+      return expect(response).to.be.fulfilled;
+    });
   });
 });

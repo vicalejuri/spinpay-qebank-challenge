@@ -25,8 +25,14 @@ export const Login = function () {
   const [errMessage, setErrMessage] = useState('');
 
   const afterLogin = async () => {
-    await auth?.getProfile();
-    await navigate(targetRoute);
+    try {
+      await auth?.getProfile();
+      await navigate(targetRoute);
+    } catch (e) {
+      const { message, name } = e.error as Error;
+      setTitle('Ocorreu um erro ao recuperar o profile 😢');
+      setErrMessage(`${name}: ${message}`);
+    }
   };
 
   useEffect(() => {
