@@ -11,7 +11,7 @@ import Card from '$components/Card/Card';
 import { useAuthStore } from '$features/auth/store/auth';
 import { useFundsStore } from '$features/funds/store/funds';
 
-import styles from './home.module.css';
+import styles from './home.module.pcss';
 
 const SubPage = lazy(() => import('$lib/layouts/SubPage/SubPage'));
 
