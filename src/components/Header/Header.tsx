@@ -11,7 +11,7 @@ const Header = () => {
     <header className={styles.header}>
       <div className={cn('wrapper', styles.wrapper)}>
         <Link to="/funds/" className={styles.logo} style={{ fontSize: 48, fontWeight: 900 }}>
-          💰
+          🥝
         </Link>
         <div className={styles.right}>
           <BalancePreview />

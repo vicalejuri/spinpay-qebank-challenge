@@ -60,12 +60,27 @@ export default class QEFundService extends QEAuthService implements IFundService
    * Withdraw `amount` from this fund.
    */
   async withdraw(value: Omit<IFundTransaction, 'type'>): Promise<void> {
-    return await this.fetch(`${this.endpoint}/accounts/${this.authToken?.id}/withdraw`, {
-      method: 'POST',
-      body: JSON.stringify({
-        ...value
-      })
-    });
+    try {
+      return await this.fetch(`${this.endpoint}/accounts/${this.authToken?.id}/withdraw`, {
+        method: 'POST',
+        body: JSON.stringify({
+          ...value
+        })
+      });
+    } catch (e) {
+      /**
+       * deposit/withdraw service has some REST invalid protocol,
+       * some routes respond with a empty response, instead of valid json,
+       * so we need to handle this case.
+       *
+       * ignore this exception, should be considered a success
+       */
+      if (e instanceof SyntaxError && e.message.startsWith('Unexpected end of JSON input')) {
+        return;
+      } else {
+        throw e;
+      }
+    }
   }
   async balance(): Promise<IFundBalanceToken> {
     return await this.fetch(`${this.endpoint}/accounts/${this.authToken?.id}/balance`);

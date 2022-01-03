@@ -102,7 +102,6 @@ export const ChangeBox = ({
     /** Lets always suggest a change */
     const suggestedChange = change(atm.stock, remainder);
     if (suggestedChange.length > 0) {
-      console.log('ATM suggested change:', suggestedChange);
       setPreferredCoinsOrNotes(mergeAtmCoins(preferredCoinsOrNotes, suggestedChange));
     }
   }, [amount]);

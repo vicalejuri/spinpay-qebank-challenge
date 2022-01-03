@@ -16,7 +16,11 @@ type DepositScreenType = 'form' | 'success' | 'error';
 
 const DepositError = ({ message }: { message: string }) => {
   // todo: Improve error layout, add retry button
-  return <div className={styles.depositError}>{message}</div>;
+  return (
+    <div className={styles.depositError}>
+      <pre className="error">{message}</pre>
+    </div>
+  );
 };
 
 const DepositSuccess = ({ amount, balance }: { amount: number; balance: number }) => {

@@ -22,9 +22,9 @@ export type IFundStatement = IFundTransaction[];
 export interface IFundTransaction {
   id?: string;
   amount: number;
-  channel: 'ATM' | 'online' | string;
+  channel: 'ATM' | 'online';
   note?: string;
-  timestamp?: DateISOString;
+  date?: DateISOString;
 }
 
 /**

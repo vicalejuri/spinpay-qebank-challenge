@@ -75,12 +75,21 @@
   }
 
   & .actions {
-    display: flex;
-    align-items: center;
-    gap: 1em;
     width: 100%;
+    margin-top: auto;
 
+    display: flex;
     flex-direction: row;
+    align-items: center;
     justify-content: center;
+    gap: 1em;
+  }
+}
+
+.depositError {
+  & pre {
+    padding: 0.5em 2em;
+    background-color: var(--surface3);
+    border-radius: var(--radius-2);
   }
 }

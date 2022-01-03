@@ -1,5 +1,5 @@
 .scroll {
   height: 100%;
-  max-height: calc(90vh - var(--headerH));
+  /* max-height: calc(90vh - var(--headerH)); */
   overflow-y: auto;
 }

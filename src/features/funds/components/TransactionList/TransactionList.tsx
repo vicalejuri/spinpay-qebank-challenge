@@ -1,27 +1,33 @@
-import type { IFundStatement, IFundTransaction } from '$features/funds/types';
-import { cn } from '$lib/utils';
 import React from 'react';
+import type { IFundStatement, IFundTransaction } from '$features/funds/types';
+import { cn, fromISOString, toCurrencyFormat } from '$lib/utils';
 
 import styles from './TransactionList.module.css';
+
+const emojis = ['🍅', '🍊', '🍋', '🍐', '🍏', '🫐', '🍆', '🍇', '🍕'];
+
+const humanizeTypeOfTransaction = (channel: IFundTransaction['channel'], amount: number) => {
+  return `${channel} ${(amount > 0 && 'Deposit') || 'Withdraw'}`;
+};
+
+const EmojiIcon = () => {
+  const randEmojiIndex = Math.floor(Math.random() * emojis.length);
+  return <div className={cn('icon', styles.icon)}>{emojis[randEmojiIndex]}</div>;
+};
 
 export const TransactionListItem = (props: IFundTransaction) => {
   const operation = props.amount >= 0 ? 'deposit' : 'withdraw';
   return (
     <li className={cn(styles.listItem)} data-variant={operation}>
-      <div className={cn('icon', styles.icon)}>{props.timestamp}</div>
+      <EmojiIcon />
       <div className={cn('description', styles.description)}>
         <div className="note">{props.note}</div>
-        <div className="timestampChannel caption1">
-          {props.timestamp}
-          {props.channel}
+        <div className="timestampChannel caption">
+          {new Date(fromISOString(props.date)).toLocaleString('default', { dateStyle: 'long', timeStyle: 'short' })}
+          <span>&nbsp;•&nbsp; {humanizeTypeOfTransaction(props.channel, props.amount)}</span>
         </div>
       </div>
-      <div className={cn(styles.amount)}>
-        {props.amount.toLocaleString('pt-BR', {
-          style: 'currency',
-          currency: 'BRL'
-        })}
-      </div>
+      <div className={cn(styles.amount)}>{toCurrencyFormat(props.amount)}</div>
     </li>
   );
 };
@@ -35,7 +41,7 @@ export default function TransactionList({
 }) {
   return (
     <section className="transaction-list">
-      <div className="title no-overwrap">{title}</div>
+      <div className={styles.subtitle}>{title}</div>
       <ul className={cn(styles.list)}>
         {transactions.map((transaction) => (
           <TransactionListItem key={transaction.id} {...transaction} />

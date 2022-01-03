@@ -15,7 +15,7 @@ export const fetch = (url: string, options: RequestInit = {}) => {
        * So we cant use naive JSON.parse and we treat it here.
        */
       const dataResponse = await response.text();
-      if (response.headers.get('Content-Type').includes('application/json')) {
+      if (response.headers.get('Content-Type')?.includes('application/json')) {
         return JSON.parse(stripJsonComments(dataResponse));
       }
       return dataResponse;

@@ -62,11 +62,13 @@ const WithdrawSuccess = ({ amount, balance }: { amount: number; balance: number 
 };
 
 const WithdrawBox = ({
+  defaultAmount,
   maxAmount,
   loading,
   disableSubmit = false,
   onSubmit
 }: {
+  defaultAmount: number;
   maxAmount: number;
   loading: boolean;
   disableSubmit?: boolean;
@@ -75,11 +77,11 @@ const WithdrawBox = ({
   const form = useRef(null);
 
   /** Prefered notes/coins that user selected */
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState(defaultAmount);
   const [preferredCoinsOrNotes, setPreferredCoinsOrNotes] = useState<AtmCoin[]>(
     defaultAtmStock.map((n) => ({ ...n, length: 0 }))
   );
-  const [amountError, setAmountError] = useState('Amount is required');
+  const [amountError, setAmountError] = useState('');
 
   const rulesForAmount = [
     (amount: String | number) => String(amount).trim() !== '' || 'Amount is required',
@@ -103,6 +105,12 @@ const WithdrawBox = ({
   const onAmountChange = useCallback((amount, errors) => {
     setAmount(Number(amount));
     setAmountError(errors.length ? errors[0] : '');
+
+    // After user edited the amount with a invalid value,
+    // we must reset the preferred coins/notes
+    // if (errors.length) {
+    setPreferredCoinsOrNotes(defaultAtmStock.map((n) => ({ ...n, length: 0 })));
+    // }
   }, []);
 
   return (
@@ -112,7 +120,7 @@ const WithdrawBox = ({
         name="amount"
         type="number"
         label="Amount"
-        defaultValue=""
+        defaultValue={defaultAmount}
         onChange={onAmountChange}
         rules={rulesForAmount}
         prefix={<span className={styles.amountPrefix}>R$</span>}
@@ -146,8 +154,7 @@ const WithdrawPage = observer(() => {
   const [activeTitle, setActiveTitle] = useState('Withdraw');
 
   /** 2. Operation parameters */
-  const [amount, setActiveAmount] = useState(0);
-  const [preferedNotes, setPreferedNotes] = useState([]);
+  const [amount, setActiveAmount] = useState(50);
 
   /** 3. Operation feedback */
   const [loading, setLoading] = useState(false);
@@ -164,12 +171,11 @@ const WithdrawPage = observer(() => {
   }, []);
 
   const withdraw = async (amount, preferredNotes: AtmCoin[]) => {
-    console.info(`Withdrawing ${amount} reais`);
     setActiveAmount(amount);
     setLoading(true);
     try {
-      await funds.withdraw(amount);
       atm.withdraw(amount, preferredNotes);
+      await funds.withdraw(amount);
       setActiveScreen('success');
       setActiveTitle('Operation completed');
     } catch (e: any) {
@@ -185,7 +191,13 @@ const WithdrawPage = observer(() => {
   return (
     <SubPage title={activeTitle} className={cn('withdraw', 'wrapper')} backButton={activeScreen == 'form'}>
       {activeScreen === 'form' && (
-        <WithdrawBox onSubmit={withdraw} maxAmount={funds.balance} loading={loading} disableSubmit={loading} />
+        <WithdrawBox
+          defaultAmount={amount}
+          maxAmount={funds.balance}
+          loading={loading}
+          disableSubmit={loading}
+          onSubmit={withdraw}
+        />
       )}
       {activeScreen === 'success' && <WithdrawSuccess amount={amount} balance={funds?.balance} />}
       {activeScreen === 'error' && <WithdrawError message={errorMessage} />}

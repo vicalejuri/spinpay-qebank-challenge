@@ -80,10 +80,10 @@ describe('funds/services/QE/Funds - Fund management service module', () => {
 
       let response = await service.deposit({
         amount: 150,
-        channel: 'bank',
+        channel: 'online',
         note: '',
         id: '',
-        timestamp: ''
+        date: new Date().toISOString()
       });
       expect(response).to.equal(undefined);
     });
@@ -91,7 +91,7 @@ describe('funds/services/QE/Funds - Fund management service module', () => {
       let service = new QEFundService({ endpoint: 'http://1.2.-1.1' });
       service.setAuthToken(authToken);
 
-      return expect(service.deposit({ amount: 150, channel: 'bank' })).to.be.rejectedWith(Error);
+      return expect(service.deposit({ amount: 150, channel: 'online' })).to.be.rejectedWith(Error);
     });
   });
   describe('withdraw(...): void', () => {
@@ -101,14 +101,14 @@ describe('funds/services/QE/Funds - Fund management service module', () => {
       let service = new QEFundService({ endpoint });
       service.setAuthToken(authToken);
 
-      let response = await service.withdraw({ amount: 150, channel: 'bank', note: '' });
+      let response = await service.withdraw({ amount: 150, channel: 'online', note: '' });
       expect(response).to.equal(null);
     });
     it('should throw error if withdraw failed', async () => {
       let service = new QEFundService({ endpoint: 'http://1.2.-1.1' });
       service.setAuthToken(authToken);
 
-      return expect(service.deposit({ amount: 10, channel: 'atm' })).to.be.rejectedWith(Error);
+      return expect(service.deposit({ amount: 10, channel: 'ATM' })).to.be.rejectedWith(Error);
     });
   });
   describe('statement(): IBankTransactionLog', () => {

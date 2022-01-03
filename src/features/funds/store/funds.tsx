@@ -13,7 +13,7 @@ import FundsService from '../services/QE/Funds';
 export default class FundsStore implements IFundsStore {
   balance = 0;
   balanceTimestamp: Date = null;
-  statement: IFundStatement = null;
+  statement: IFundStatement = [];
 
   _service: IFundService;
 
@@ -51,34 +51,39 @@ export default class FundsStore implements IFundsStore {
 
   async getStatement(): Promise<IFundStatement> {
     const statement = await this._service.statement();
+    // Join local + remote statements, and order by timestamp (desc)
+    const joinedStatements = [...statement, ...(this.statement || [])].sort(
+      (a, b) => fromISOString(b.date) - fromISOString(a.date)
+    );
+
+    // Remove duplicates based on id
+    const dedupedStatements = joinedStatements.reduce<IFundTransaction[]>((prev, curr) => {
+      if (prev.findIndex((c) => c.id === curr.id) !== -1) {
+        return prev;
+      }
+      return [...prev, curr];
+    }, []);
+
     runInAction(() => {
-      // Join local + remote statements, and order by timestamp (desc)
-      this.statement = [...statement, ...(this.statement || [])].sort((a, b) => {
-        return fromISOString(b.timestamp) - fromISOString(a.timestamp);
-      });
+      this.statement = dedupedStatements;
     });
     return this.statement;
   }
 
   addToLocalStatement(transaction: IFundTransaction): void {
-    if (this.statement === null) {
-      runInAction(() => {
-        this.statement = [];
-      });
-    }
     runInAction(() => {
       this.statement.push(transaction);
     });
   }
 
   async deposit(amount: number, note: string) {
-    const depositResponse = await this._service.deposit({ amount, channel: 'atm' });
+    const depositResponse = await this._service.deposit({ amount, channel: 'ATM', note });
     const transaction: IFundTransaction = {
       id: randId(),
       amount,
       note,
       channel: 'ATM',
-      timestamp: new Date().toISOString()
+      date: new Date().toISOString()
     };
     runInAction(() => {
       this.balance += amount;
@@ -88,11 +93,12 @@ export default class FundsStore implements IFundsStore {
   }
 
   async withdraw(amount: number) {
+    const withdrawTransaction = await this._service.withdraw({ amount, channel: 'ATM', note: '' });
     const transaction: IFundTransaction = {
       id: randId(),
       amount: amount * -1,
       channel: 'ATM',
-      timestamp: new Date().toISOString()
+      date: new Date().toISOString()
     };
     runInAction(() => {
       this.balance -= amount;

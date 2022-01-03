@@ -21,8 +21,8 @@ const authToken = { id: '1', token: 'qwerty', createdAt: new Date().toISOString(
 const fakeTransaction: IFundTransaction[] = [
   {
     amount: 0,
-    channel: 'atm',
-    timestamp: '2020-01-01T00:00:00.000Z',
+    channel: 'ATM',
+    date: '2020-01-01T00:00:00.000Z',
     id: '1',
     note: ''
   }
@@ -94,6 +94,15 @@ describe('funds/store - FundsStore Domain module', () => {
       const statement = await store.getStatement();
 
       expect(statement[0]).to.eql(transaction);
+    });
+    it('Should not have duplicated transactions', async () => {
+      const store = new FundsStore(null, fakeFundsService);
+
+      await store.getStatement();
+      await store.getStatement();
+
+      const statement = store.statement;
+      expect(statement).to.eql([...new Set(statement)]);
     });
   });
   describe('async getBalance()', () => {
